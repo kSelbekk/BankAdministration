@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using WebApplication7.Data;
 using WebApplication7.Models;
 using WebApplication7.Services;
@@ -15,9 +16,9 @@ namespace WebApplication7.Controllers
     public class HomeController : BaseController
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly IBankAdminServices _bankAdminServices;
+        private readonly IBankServices _bankAdminServices;
 
-        public HomeController(ILogger<HomeController> logger, BankAppDataContext bankAppDataContext, IBankAdminServices bankAdminServices)
+        public HomeController(ILogger<HomeController> logger, BankAppDataContext bankAppDataContext, IBankServices bankAdminServices)
             : base(bankAppDataContext)
         {
             _logger = logger;
@@ -26,7 +27,6 @@ namespace WebApplication7.Controllers
 
         public IActionResult Index()
         {
-            var viewModel = new HomeIndexViewModel();
             var query = _bankAdminServices.GetAllDispositionsFromDatabase();
 
             var totalCustomers = query
@@ -42,7 +42,7 @@ namespace WebApplication7.Controllers
                 .Select(p => p.AccountId)
                 .Count();
 
-            viewModel = new HomeIndexViewModel
+            var viewModel = new HomeIndexViewModel
             {
                 TotalAccounts = totalAccounts,
                 TotalBalance = totalBalance,

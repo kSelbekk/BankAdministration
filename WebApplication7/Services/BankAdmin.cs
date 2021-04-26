@@ -1,15 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using WebApplication7.Models;
 
 namespace WebApplication7.Services
 {
-    public interface IBankAdminServices
-    {
-        public IQueryable<Dispositions> GetAllDispositionsFromDatabase();
-    }
-
-    public class BankAdmin : IBankAdminServices
+    public class BankAdmin : IBankServices
     {
         private readonly BankAppDataContext _bankAppDataContext;
 
