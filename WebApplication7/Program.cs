@@ -23,6 +23,7 @@ namespace WebApplication7
             {
                 var serviceProvider = scope.ServiceProvider;
                 var r = serviceProvider.GetRequiredService<BankAppDataContext>();
+                var userManager = serviceProvider.GetRequiredService<UserManager<IdentityUser>>();
                 var initializer = new DataInitializer();
                 initializer.InitializeDatabase(r);
             }
@@ -36,13 +37,5 @@ namespace WebApplication7
                 {
                     webBuilder.UseStartup<Startup>();
                 });
-    }
-
-    public class DataInitializer
-    {
-        public void InitializeDatabase(BankAppDataContext applicationDbContext)
-        {
-            applicationDbContext.Database.Migrate();
-        }
     }
 }

@@ -7,5 +7,7 @@ namespace WebApplication7.Services
     public interface IBankServices
     {
         public IQueryable<Dispositions> GetAllDispositionsFromDatabase();
+
+        public Dispositions GetSpecificCustomerFromDatabase(int id);
     }
 }

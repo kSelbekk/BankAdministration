@@ -29,6 +29,8 @@ namespace WebApplication7
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddResponseCaching();
+
             services.AddTransient<IBankServices, BankAdmin>();
 
             services.AddDbContext<BankAppDataContext>(options =>
@@ -59,6 +61,7 @@ namespace WebApplication7
             app.UseStaticFiles();
 
             app.UseRouting();
+            app.UseResponseCaching();
 
             app.UseAuthentication();
             app.UseAuthorization();

@@ -16,18 +16,17 @@ namespace WebApplication7.Controllers
     public class HomeController : BaseController
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly IBankServices _bankAdminServices;
 
-        public HomeController(ILogger<HomeController> logger, BankAppDataContext bankAppDataContext, IBankServices bankAdminServices)
-            : base(bankAppDataContext)
+        public HomeController(ILogger<HomeController> logger, BankAppDataContext bankAppDataContext, IBankServices bankServices)
+            : base(bankAppDataContext, bankServices)
         {
             _logger = logger;
-            _bankAdminServices = bankAdminServices;
         }
 
+        [ResponseCache(Duration = 30, Location = ResponseCacheLocation.Any, NoStore = false)]
         public IActionResult Index()
         {
-            var query = _bankAdminServices.GetAllDispositionsFromDatabase();
+            var query = _bankServices.GetAllDispositionsFromDatabase();
 
             var totalCustomers = query
                 .Select(c => c.Customer)
