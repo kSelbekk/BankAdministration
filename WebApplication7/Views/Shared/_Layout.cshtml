@@ -1,4 +1,7 @@
-﻿<!--
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+<!--
 =========================================================
 * Material Dashboard Dark Edition - v2.1.0
 =========================================================
@@ -50,7 +53,7 @@
                            asp-controller="Customer"
                            asp-action="CustomerProfile">
                             <i class="material-icons">person</i>
-                            <p>Customer</p>
+                            <p>Customer profile</p>
                         </a>
                     </li>
                     <li class="nav-item ">
@@ -112,14 +115,17 @@
                                     </p>
                                 </a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="javascript:void(0)">
-                                    <i class="material-icons">person</i>
-                                    <p class="d-lg-none d-md-block">
-                                        Account
-                                    </p>
-                                </a>
-                            </li>
+                            @if (SignInManager.IsSignedIn(User))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
+                                        <i class="material-icons">person</i>
+                                        <p class="d-lg-none d-md-block">
+                                            Account
+                                        </p>
+                                    </a>
+                                </li>
+                            }
                         </ul>
                     </div>
                 </div>
