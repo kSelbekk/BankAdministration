@@ -10,8 +10,8 @@ namespace WebApplication7.Data
     {
         public void InitializeDatabase(BankAppDataContext applicationDbContext)
         {
-            SeedData(applicationDbContext);
             applicationDbContext.Database.Migrate();
+            SeedData(applicationDbContext);
         }
 
         public static void SeedData(BankAppDataContext applicationDbContext)
