@@ -119,16 +119,20 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td>
-                                    <h3>@Model.Account.AccountId</h3>
-                                </td>
-                                <td>
-                                    <h3>@String.Format("{0:C0}", Model.TotalBalance)</h3>
-                                </td>
+                                @foreach (var i in Model.Account)
+                                {
+                                    <td>
+                                        <h3>@i.AccountId</h3>
+                                    </td>
+                                    <td>
+                                        <h3>@String.Format("{0:C}", i.Balance)</h3>
+                                    </td>
+                                }
                             </tr>
                         </tbody>
                     </table>
                 </div>
+                <h3>Total balance: @String.Format("{0:c}", Model.TotalBalance)</h3>
             </div>
         </div>
     </div>

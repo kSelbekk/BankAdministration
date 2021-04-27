@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
 using WebApplication7.Models;
@@ -20,24 +21,25 @@ namespace WebApplication7.Controllers
             var dbCustomer = _bankServices.GetSpecificCustomerFromDatabase(id);
             if (dbCustomer == null) return View();
 
+            var account = _bankServices.GetBankAccountsFromCustomer(id).ToList();
             var viewModel = new CustomerCustomerProfileViewModel
             {
                 Id = dbCustomer.CustomerId,
-                Birthday = dbCustomer.Customer.Birthday,
-                Gender = dbCustomer.Customer.Gender,
-                City = dbCustomer.Customer.City,
-                Country = dbCustomer.Customer.Country,
-                CountryCode = dbCustomer.Customer.CountryCode,
-                Emailaddress = dbCustomer.Customer.Emailaddress,
-                Givenname = dbCustomer.Customer.Givenname,
-                Surname = dbCustomer.Customer.Surname,
-                NationalId = dbCustomer.Customer.NationalId,
-                Streetaddress = dbCustomer.Customer.Streetaddress,
-                TelephoneCountryCode = dbCustomer.Customer.Telephonecountrycode,
-                Telephonenumber = dbCustomer.Customer.Telephonenumber,
-                Zipcode = dbCustomer.Customer.Zipcode,
-                TotalBalance = dbCustomer.Account.Balance,
-                Account = dbCustomer.Account
+                Birthday = dbCustomer.Birthday,
+                Gender = dbCustomer.Gender,
+                City = dbCustomer.City,
+                Country = dbCustomer.Country,
+                CountryCode = dbCustomer.CountryCode,
+                Emailaddress = dbCustomer.Emailaddress,
+                Givenname = dbCustomer.Givenname,
+                Surname = dbCustomer.Surname,
+                NationalId = dbCustomer.NationalId,
+                Streetaddress = dbCustomer.Streetaddress,
+                TelephoneCountryCode = dbCustomer.Telephonecountrycode,
+                Telephonenumber = dbCustomer.Telephonenumber,
+                Zipcode = dbCustomer.Zipcode,
+                Account = account,
+                TotalBalance = account.Sum(a => a.Balance)
             };
             return View(viewModel);
         }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using WebApplication7.Models;
 
 namespace WebApplication7.ViewModels
@@ -19,7 +20,7 @@ namespace WebApplication7.ViewModels
         public string? TelephoneCountryCode { get; set; }
         public string? Telephonenumber { get; set; }
         public string? Emailaddress { get; set; }
-        public Accounts Account { get; set; }
+        public List<Accounts> Account { get; set; }
         public decimal TotalBalance { get; set; }
     }
 }
