@@ -12,6 +12,13 @@
 
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 -->
+@{
+    string activeController = "";
+    if (ViewContext.RouteData.Values["Controller"] != null)
+    {
+        activeController = ViewContext.RouteData.Values["Controller"].ToString();
+    }
+}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -29,7 +36,7 @@
             <div class="sidebar-wrapper">
                 <ul class="nav">
                     <partial name="_LoginPartial" />
-                    <li class="nav-item  ">
+                    <li class="nav-item @(activeController == "Home" ? " active" : "")">
                         <!--Needs asp-action"Home" ish-->
                         <a class="nav-link"
                            asp-controller="Home"
@@ -38,7 +45,7 @@
                             <p>Home</p>
                         </a>
                     </li>
-                    <li class="nav-item ">
+                    <li class="nav-item @(activeController == "Customer" ? " active" : "")">
                         <a class="nav-link"
                            asp-controller="Customer"
                            asp-action="CustomerProfile">
@@ -64,7 +71,7 @@
                             <p>Icons</p>
                         </a>
                     </li>
-                    <li class="nav-item active ">
+                    <li class="nav-item">
                         <a class="nav-link" href="#">
                             <i class="material-icons">notifications</i>
                             <p>Notifications</p>
@@ -301,14 +308,12 @@
                     setTimeout(function () {
                         clearInterval(simulateWindowResize);
                     }, 1000);
-
                 });
             });
         });
     </script>
     <script>
         $(document).ready(function () {
-            // Javascript method's body can be found in assets/js/demos.js
             md.initDashboardPageCharts();
 
         });
