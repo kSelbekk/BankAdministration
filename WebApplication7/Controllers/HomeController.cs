@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using WebApplication7.Data;
 using WebApplication7.Models;
 using WebApplication7.Services;
@@ -24,8 +25,10 @@ namespace WebApplication7.Controllers
         }
 
         [ResponseCache(Duration = 30, Location = ResponseCacheLocation.Any, NoStore = false)]
-        public IActionResult Index()
+        public IActionResult Index(string q)
         {
+            var viewModel = new StartPageModel();
+
             var query = _bankServices.GetAllDispositionsFromDatabase();
 
             var totalCustomers = query
@@ -41,12 +44,28 @@ namespace WebApplication7.Controllers
                 .Select(p => p.AccountId)
                 .Count();
 
-            var viewModel = new HomeIndexViewModel
+            viewModel.HomeIndexViewModels = new StartPageModel.HomeIndexViewModel()
             {
                 TotalAccounts = totalAccounts,
                 TotalBalance = totalBalance,
                 TotalCustomers = totalCustomers
             };
+
+            var customerQuery = _bankServices.GetAllCustomersFromDatabase()
+                .Where(c => q == null
+                            || c.Surname.Contains(q)
+                            || c.Givenname.Contains(q)
+                            || c.City.Contains(q))
+                .Take(50);
+
+            viewModel.ListCustomersViewModels = customerQuery.Select(c => new StartPageModel.ListCustomersViewModel
+            {
+                Address = c.Streetaddress,
+                FullName = c.Givenname + " " + c.Surname,
+                City = c.City,
+                CustomerId = c.CustomerId,
+                PersonalNumber = c.Birthday
+            }).ToList();
 
             return View(viewModel);
         }

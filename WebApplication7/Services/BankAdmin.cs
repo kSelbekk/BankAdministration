@@ -20,13 +20,17 @@ namespace WebApplication7.Services
 
         public Customers GetSpecificCustomerFromDatabase(int id)
         {
-            return _bankAppDataContext.Customers
-                .FirstOrDefault(i => i.CustomerId == id);
+            return _bankAppDataContext.Customers.FirstOrDefault(i => i.CustomerId == id);
         }
 
         public IQueryable<Accounts> GetBankAccountsFromCustomer(int id)
         {
             return _bankAppDataContext.Accounts.Where(a => a.AccountId == id);
+        }
+
+        public IQueryable<Customers> GetAllCustomersFromDatabase()
+        {
+            return _bankAppDataContext.Customers;
         }
     }
 }

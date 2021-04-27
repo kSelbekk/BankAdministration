@@ -1,131 +1,20 @@
-﻿@model WebApplication7.ViewModels.HomeIndexViewModel
+﻿@model WebApplication7.ViewModels.StartPageModel
 @{
     ViewData["Title"] = "Home Page";
 }
 
 <div class="container-fluid">
-    <div class="row">
-        <div class="col-xl-4 col-lg-12">
-            <div class="card card-chart">
-                <div class="card-header card-header-success">
-                    <div class="ct-chart" id="dailySalesChart"></div>
-                </div>
-                <div class="card-body">
-                    <h4 class="card-title">Daily Sales</h4>
-                    <p class="card-category">
-                        <span class="text-success"><i class="fa fa-long-arrow-up"></i> 55% </span> increase in today sales.
-                    </p>
-                </div>
-                <div class="card-footer">
-                    <div class="stats">
-                        <i class="material-icons">access_time</i>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-xl-4 col-lg-12">
-            <div class="card card-chart">
-                <div class="card-header card-header-warning">
-                    <div class="ct-chart" id="websiteViewsChart"></div>
-                </div>
-                <div class="card-body">
-                    <h4 class="card-title">Email Subscriptions</h4>
-                    <p class="card-category">Last Campaign Performance</p>
-                </div>
-                <div class="card-footer">
-                    <div class="stats">
-                        <i class="material-icons">access_time</i> campaign sent 2 days ago
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-xl-4 col-lg-12">
-            <div class="card card-chart">
-                <div class="card-header card-header-danger">
-                    <div class="ct-chart" id="completedTasksChart"></div>
-                </div>
-                <div class="card-body">
-                    <h4 class="card-title">Completed Tasks</h4>
-                    <p class="card-category">Last Campaign Performance</p>
-                </div>
-                <div class="card-footer">
-                    <div class="stats">
-                        <i class="material-icons">access_time</i> campaign sent 2 days ago
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row">
 
-        <div class="col-xl-4 col-lg-12">
-            <div class="card card-stats">
-                <div class="card-header card-header-warning card-header-icon">
-                    <div class="card-icon">
-                        <i class="material-icons">content_copy</i>
-                    </div>
-                    <p class="card-category">Total accounts</p>
-                    <h3 class="card-title">
-                        @Model.TotalAccounts
-                        <small></small>
-                    </h3>
-                </div>
-            </div>
-        </div>
-        <div class="col-xl-4 col-lg-12">
-            <div class="card card-stats">
-                <div class="card-header card-header-success card-header-icon">
-                    <div class="card-icon">
-                        <i class="material-icons">dollar</i>
-                    </div>
-                    <p class="card-category">Total balance</p>
-                    <h3 class="card-title">@String.Format("{0:C}", Model.TotalBalance)</h3>
-                </div>
-            </div>
-        </div>
-        <div class="col-xl-4 col-lg-12">
-            <div class="card card-stats">
-                <div class="card-header card-header-danger card-header-icon">
-                    <div class="card-icon">
-                        <i class="material-icons">info_outline</i>
-                    </div>
-                    <p class="card-category">Total Customers</p>
-                    <h3 class="card-title">@Model.TotalCustomers</h3>
-                </div>
-            </div>
-        </div>
-    </div>
+    <partial name="_BankInformation" model="@Model.HomeIndexViewModels" />
+
     <form class="form-outline" method="get" asp-controller="Customer" asp-action="CustomerProfile">
         <input type="number" name="id" class="form-control text-center w-50" placeholder="Search customer number...."
                aria-label="Search" />
     </form>
     <div class="row">
-        <div class="col-lg-6 col-md-12">
-            <div class="card">
-                <div class="card-header card-header-primary">
-                    <h4 class="card-title">Customers</h4>
-                    <p class="card-category">New employees on 15th September, 2016</p>
-                </div>
-                <div class="card-body table-responsive">
-                    <table class="table table-hover">
-                        <thead class="text-warning">
-                        <th>name</th>
-                        <th>Name</th>
-                        <th>Salary</th>
-                        <th>Country</th>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Some name</td>
-                                <td>Some name</td>
-                                <td>$36,738</td>
-                                <td>Niger</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
+
+        <partial name="_CustomerList" model="@Model.ListCustomersViewModels" />
+
         <div class="col-lg-6 col-md-12">
             <div class="card">
                 <div class="card-header card-header-tabs card-header-warning">
