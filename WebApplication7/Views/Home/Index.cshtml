@@ -7,8 +7,8 @@
 
     <partial name="_BankInformation" model="@Model.HomeIndexViewModels" />
 
-    <form class="form-outline" method="get" asp-controller="Customer" asp-action="CustomerProfile">
-        <input type="number" name="id" class="form-control text-center w-50" placeholder="Search customer number...."
+    <form class="form-outline" asp-controller="Home" asp-action="Index">
+        <input asp-for="q" class="form-control text-center w-50" placeholder="Search for customer..."
                aria-label="Search" />
     </form>
     <div class="row">

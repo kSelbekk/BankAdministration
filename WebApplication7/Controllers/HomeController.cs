@@ -51,21 +51,26 @@ namespace WebApplication7.Controllers
                 TotalCustomers = totalCustomers
             };
 
-            var customerQuery = _bankServices.GetAllCustomersFromDatabase()
-                .Where(c => q == null
-                            || c.Surname.Contains(q)
-                            || c.Givenname.Contains(q)
-                            || c.City.Contains(q))
-                .Take(50);
-
-            viewModel.ListCustomersViewModels = customerQuery.Select(c => new StartPageModel.ListCustomersViewModel
+            if (!string.IsNullOrEmpty(q))
             {
-                Address = c.Streetaddress,
-                FullName = c.Givenname + " " + c.Surname,
-                City = c.City,
-                CustomerId = c.CustomerId,
-                PersonalNumber = c.Birthday
-            }).ToList();
+                var customerQuery = _bankServices.GetAllCustomersFromDatabase()
+                    .Where(c => q == null
+                                || c.Surname.Contains(q)
+                                || c.Givenname.Contains(q)
+                                || c.City.Contains(q))
+                    .Take(50);
+
+                viewModel.ListCustomersViewModels = customerQuery.Select(c => new StartPageModel.ListCustomersViewModel
+                {
+                    Address = c.Streetaddress,
+                    FullName = c.Givenname + " " + c.Surname,
+                    City = c.City,
+                    CustomerId = c.CustomerId,
+                    PersonalNumber = c.Birthday
+                }).ToList();
+
+                viewModel.q = q;
+            }
 
             return View(viewModel);
         }

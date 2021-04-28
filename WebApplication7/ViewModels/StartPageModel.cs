@@ -14,6 +14,8 @@ namespace WebApplication7.ViewModels
             public string City { get; set; }
         }
 
+        public string q { get; set; }
+
         public class HomeIndexViewModel
         {
             public int TotalCustomers { get; set; }

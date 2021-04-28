@@ -22,5 +22,6 @@ namespace WebApplication7.ViewModels
         public string? Emailaddress { get; set; }
         public List<Accounts> Account { get; set; }
         public decimal TotalBalance { get; set; }
+        public string Type { get; set; }
     }
 }

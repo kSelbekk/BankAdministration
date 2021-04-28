@@ -23,9 +23,9 @@ namespace WebApplication7.Services
             return _bankAppDataContext.Customers.FirstOrDefault(i => i.CustomerId == id);
         }
 
-        public IQueryable<Accounts> GetBankAccountsFromCustomer(int id)
+        public IQueryable<Dispositions> GetBankAccountsFromCustomer(int id)
         {
-            return _bankAppDataContext.Accounts.Where(a => a.AccountId == id);
+            return _bankAppDataContext.Dispositions.Where(a => a.DispositionId == id);
         }
 
         public IQueryable<Customers> GetAllCustomersFromDatabase()

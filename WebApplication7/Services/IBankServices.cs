@@ -10,7 +10,7 @@ namespace WebApplication7.Services
 
         public Customers GetSpecificCustomerFromDatabase(int id);
 
-        public IQueryable<Accounts> GetBankAccountsFromCustomer(int id);
+        public IQueryable<Dispositions> GetBankAccountsFromCustomer(int id);
 
         public IQueryable<Customers> GetAllCustomersFromDatabase();
     }
