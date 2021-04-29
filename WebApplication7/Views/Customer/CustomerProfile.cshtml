@@ -3,103 +3,90 @@
     ViewData["Title"] = "Customer Profile";
 }
 
-@if (Model != null)
-{
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card card-plain">
-                    <div class="card-header card-header-primary">
-                        <p class="card-category">Name</p>
-                        <h4 class="card-title mt-0">@Model.Givenname @Model.Surname</h4>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-hover">
-                                <thead class="">
-                                    <tr>
-                                        <th>Customer Id</th>
-                                        <th>Emailaddress</th>
-                                        <th>Birthday</th>
-                                        <th>Country</th>
-                                        <th>Country Code</th>
-                                        <th>City</th>
-                                        <th>Streetaddress</th>
-                                        <th>Gender</th>
-                                        <th>Zipcode</th>
-                                        <th>NationalId</th>
-                                        <th>Telephonenumber Country Code</th>
-                                        <th>Telephonenumber</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>@Model.Id</td>
-                                        <td>@Model.Emailaddress</td>
-                                        <td>@String.Format("{0:d}", @Model.Birthday)</td>
-                                        <td>@Model.Country</td>
-                                        <td>@Model.CountryCode</td>
-                                        <td>@Model.City</td>
-                                        <td>@Model.Streetaddress</td>
-                                        <td>@Model.Gender</td>
-                                        <td>@Model.Zipcode</td>
-                                        <td>@Model.NationalId</td>
-                                        <td>@Model.TelephoneCountryCode</td>
-                                        <td>@Model.Telephonenumber</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card card-plain">
+                <div class="card-header card-header-primary">
+                    <p class="card-category">Name</p>
+                    <h4 class="card-title mt-0">@Model.Givenname @Model.Surname</h4>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="">
+                                <tr>
+                                    <th>Customer Id</th>
+                                    <th>Emailaddress</th>
+                                    <th>Birthday</th>
+                                    <th>Country</th>
+                                    <th>Country Code</th>
+                                    <th>City</th>
+                                    <th>Streetaddress</th>
+                                    <th>Gender</th>
+                                    <th>Zipcode</th>
+                                    <th>NationalId</th>
+                                    <th>Telephonenumber Country Code</th>
+                                    <th>Telephonenumber</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>@Model.Id</td>
+                                    <td>@Model.Emailaddress</td>
+                                    <td>@String.Format("{0:d}", @Model.Birthday)</td>
+                                    <td>@Model.Country</td>
+                                    <td>@Model.CountryCode</td>
+                                    <td>@Model.City</td>
+                                    <td>@Model.Streetaddress</td>
+                                    <td>@Model.Gender</td>
+                                    <td>@Model.Zipcode</td>
+                                    <td>@Model.NationalId</td>
+                                    <td>@Model.TelephoneCountryCode</td>
+                                    <td>@Model.Telephonenumber</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="col-md-12">
-        <div class="card">
-            <div class="card-header card-header-primary">
-                <h4 class="card-title ">Account Info</h4>
-            </div>
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table">
-                        <thead class=" text-primary">
-                            <tr>
-                                <th>ID</th>
-                                <th>Balance</th>
-                                <th>Type</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                @foreach (var i in Model.Account)
-                                {
-                                    <td>
-                                        <h3>@i.AccountId</h3>
-                                    </td>
-                                    <td>
-                                        <h3>@String.Format("{0:C}", i.Balance)</h3>
-                                    </td>
-                                    <td>
-                                        <h3>@Model.Type</h3>
-                                    </td>
-                                }
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <h3>Total balance: @String.Format("{0:c}", Model.TotalBalance)</h3>
-            </div>
+</div>
+<div class="col-md-12">
+    <div class="card">
+        <div class="card-header card-header-primary">
+            <h4 class="card-title ">Account Info</h4>
         </div>
-    </div>
-}
-else
-{
-    <div class="card card-profile">
         <div class="card-body">
-            <h1 class="card-category">No customer found...</h1>
-            <p>Search for one</p>
-            <a asp-controller="Home" asp-action="Index" class="btn btn-primary btn-round">Home</a>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead class=" text-primary">
+                        <tr>
+                            <th>ID</th>
+                            <th>Balance</th>
+                            <th>Type</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            @foreach (var i in Model.Account)
+                            {
+                                <td>
+                                    <a asp-action="ListTransactionsForCustomer" asp-route-id="@i.AccountId"><h3>@i.AccountId</h3></a>
+                                </td>
+                                <td>
+                                    <h3>@String.Format("{0:C}", i.Balance)</h3>
+                                </td>
+                                <td>
+                                    <h3>@Model.Type</h3>
+                                </td>
+                            }
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <h3>Total balance: @String.Format("{0:c}", Model.TotalBalance)</h3>
         </div>
     </div>
-}
+</div>

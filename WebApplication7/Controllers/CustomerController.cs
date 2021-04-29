@@ -87,5 +87,27 @@ namespace WebApplication7.Controllers
 
             return View(viewModel);
         }
+
+        public IActionResult ListTransactionsForCustomer(int id)
+        {
+            var viewModel = new CustomerListTransactionsForCustomerViewModel
+            {
+                CustomerTransactions = _bankServices.GetAllTransactionsFromSpecificCustomer(id).Take(20).Select(p =>
+                    new CustomerListTransactionsForCustomerViewModel.CustomerTransaction
+                    {
+                        Balance = p.Balance,
+                        Type = p.Type,
+                        Account = p.Account,
+                        Amount = p.Amount,
+                        Bank = p.Bank,
+                        Operation = p.Operation,
+                        Symbol = p.Symbol,
+                        TransactionDate = p.Date,
+                        TransactionId = p.TransactionId
+                    }).ToList(),
+            };
+
+            return View(viewModel);
+        }
     }
 }

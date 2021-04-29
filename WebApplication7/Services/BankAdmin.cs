@@ -32,5 +32,10 @@ namespace WebApplication7.Services
         {
             return _bankAppDataContext.Customers;
         }
+
+        public IQueryable<Transactions> GetAllTransactionsFromSpecificCustomer(int id)
+        {
+            return _bankAppDataContext.Transactions.Where(c => c.AccountId == id).OrderByDescending(a => a);
+        }
     }
 }

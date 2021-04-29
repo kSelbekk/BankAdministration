@@ -13,5 +13,7 @@ namespace WebApplication7.Services
         public IQueryable<Dispositions> GetBankAccountsFromCustomer(int id);
 
         public IQueryable<Customers> GetAllCustomersFromDatabase();
+
+        public IQueryable<Transactions> GetAllTransactionsFromSpecificCustomer(int id);
     }
 }

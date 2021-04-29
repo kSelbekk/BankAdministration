@@ -1,0 +1,53 @@
+﻿@model WebApplication7.ViewModels.CustomerListTransactionsForCustomerViewModel
+
+<div class="card">
+    <div class="card-header card-header-primary">
+        <h4 class="card-title ">Transaction Info</h4>
+    </div>
+    <div class="card-body table-responsive">
+        <table class="table table-hover">
+            <thead class="text-primary">
+                <tr>
+                    <th>Transaction Id</th>
+                    <th>Amount</th>
+                    <th>Balance</th>
+                    <th>Bank</th>
+                    <th>Operation</th>
+                    <th>Symbol</th>
+                    <th>Transaction Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var i in Model.CustomerTransactions)
+                {
+                    <tr>
+                        <td>@i.TransactionId</td>
+                        <td>@String.Format("{0:c}", i.Amount)</td>
+                        <td>@String.Format("{0:c}", i.Balance)</td>
+                        <td>@i.Bank</td>
+                        <td>@i.Operation</td>
+                        <td>@i.Symbol</td>
+                        <td>@String.Format("{0:F}", i.TransactionDate)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <div class="card-footer">
+            <a class="btn btn-primary" type="button" onclick="FetchTransactions()">Load More...</a>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script>
+        function FetchTransactions(id) {
+            $.ajax({
+                url: "/Customer/ListTransactionsForCustomer/" + id,
+                success: function (result) {
+                    $('#GetTransaction').html(result);
+                }
+            });
+        }
+    </script>
+}
