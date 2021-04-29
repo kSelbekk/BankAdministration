@@ -1,0 +1,99 @@
+﻿@model WebApplication7.ViewModels.CustomerListCustomersViewModel
+@{
+    ViewData["Title"] = "Customers";
+}
+<form class="form-outline" asp-controller="Customer" asp-action="ListCustomers">
+    <input asp-for="q" class="form-control text-center w-50" placeholder="Search customer..."
+           aria-label="Search" />
+</form>
+<div class="">
+    <div class="card">
+        <div class="card-header card-header-primary">
+            <h4 class="card-title">Customers</h4>
+        </div>
+        @if (Model != null)
+        {
+            <div class="card-body table-responsive">
+                <table class="table table-hover">
+                    <thead class="text-warning">
+                        <tr>
+                            <th>Id</th>
+                            <th>Name</th>
+                            <th>City</th>
+                            <th>Address</th>
+                            <th>Personal number</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var i in Model.CustomersViewModels)
+                        {
+                            <tr>
+                                <td><a asp-action="CustomerProfile" asp-route-id="@i.CustomerId">@i.CustomerId</a></td>
+                                <td><a asp-action="CustomerProfile" asp-route-id="@i.CustomerId">@i.FullName</a></td>
+                                <td>@i.City</td>
+                                <td>@i.Address</td>
+                                <td>@String.Format("{0:d}", i.PersonalNumber)</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <div class="card-footer">
+                    <nav>
+                        <ul class="pagination justify-content-center">
+                            <li class="page-item @(Model.Page == 1 ? "disabled" : "")">
+                                <a class="page-link active text-primary"
+                                   asp-action="ListCustomers"
+                                   asp-route-q="@Model.q"
+                                   asp-route-page="@(Model.Page -1)">
+                                    <span aria-hidden="true">&laquo;</span>
+                                    <span class="sr-only">Previus</span>
+                                </a>
+                            </li>
+                            @for (var p = 1; p <= @Model.TotalPages; p++)
+                            {
+                                if (Model.Page == p)
+                                {
+                                    var end = p + 2;
+                                    var start = p;
+                                    if (p > 2)
+                                    {
+                                        start = p - 2;
+                                    }
+
+                                    if (end - 1 == Model.TotalPages)
+                                    {
+                                        end = p + 1;
+                                    }
+                                    if (p == Model.TotalPages)
+                                    {
+                                        end = p;
+                                    }
+                                    for (; start <= end; start++)
+                                    {
+                                        <li class="page-item @(Model.Page == start ? "active" : "")">
+                                            <a class="page-link active text-primary"
+                                               asp-action="ListCustomers"
+                                               asp-route-q="@Model.q"
+                                               asp-route-page="@start">@start</a>
+                                        </li>
+                                    }
+                                }
+
+                            }
+
+                            <li class="page-item @(Model.Page == Model.TotalPages ? "disabled" : "")">
+                                <a class="page-link active text-primary"
+                                   asp-action="ListCustomers"
+                                   asp-route-q="@Model.q"
+                                   asp-route-page="@(Model.Page +1)">
+                                    <span aria-hidden="true">&raquo;</span>
+                                    <span class="sr-only">Next</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        }
+    </div>
+</div>

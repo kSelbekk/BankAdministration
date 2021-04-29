@@ -7,14 +7,11 @@
 
     <partial name="_BankInformation" model="@Model.HomeIndexViewModels" />
 
-    <form class="form-outline" asp-controller="Home" asp-action="Index">
-        <input asp-for="q" class="form-control text-center w-50" placeholder="Search for customer..."
+    <form class="form-outline" asp-controller="Customer" asp-action="CustomerProfile">
+        <input name="id" class="form-control text-center text-primary" placeholder="Search customer number..."
                aria-label="Search" />
     </form>
     <div class="row">
-
-        <partial name="_CustomerList" model="@Model.ListCustomersViewModels" />
-
         <div class="col-lg-6 col-md-12">
             <div class="card">
                 <div class="card-header card-header-tabs card-header-warning">

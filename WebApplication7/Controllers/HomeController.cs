@@ -25,7 +25,7 @@ namespace WebApplication7.Controllers
         }
 
         [ResponseCache(Duration = 30, Location = ResponseCacheLocation.Any, NoStore = false)]
-        public IActionResult Index(string q)
+        public IActionResult Index()
         {
             var viewModel = new StartPageModel();
 
@@ -50,27 +50,6 @@ namespace WebApplication7.Controllers
                 TotalBalance = totalBalance,
                 TotalCustomers = totalCustomers
             };
-
-            if (!string.IsNullOrEmpty(q))
-            {
-                var customerQuery = _bankServices.GetAllCustomersFromDatabase()
-                    .Where(c => q == null
-                                || c.Surname.Contains(q)
-                                || c.Givenname.Contains(q)
-                                || c.City.Contains(q))
-                    .Take(50);
-
-                viewModel.ListCustomersViewModels = customerQuery.Select(c => new StartPageModel.ListCustomersViewModel
-                {
-                    Address = c.Streetaddress,
-                    FullName = c.Givenname + " " + c.Surname,
-                    City = c.City,
-                    CustomerId = c.CustomerId,
-                    PersonalNumber = c.Birthday
-                }).ToList();
-
-                viewModel.q = q;
-            }
 
             return View(viewModel);
         }

@@ -53,5 +53,39 @@ namespace WebApplication7.Controllers
             };
             return View(viewModel);
         }
+
+        public IActionResult ListCustomers(string q, int page = 1)
+        {
+            var customerQuery = _bankServices.GetAllCustomersFromDatabase()
+                .Where(c => q == null
+                            || c.Surname.Contains(q)
+                            || c.Givenname.Contains(q)
+                            || c.City.Contains(q));
+
+            var totalRowCount = customerQuery.Count();
+
+            var pageCount = (double)totalRowCount / 50;
+            var howManyToSKip = (page - 1) * 50;
+            customerQuery = customerQuery.Skip(howManyToSKip).Take(50);
+
+            var viewModel = new CustomerListCustomersViewModel
+            {
+                CustomersViewModels = customerQuery.Select(dbCustomer =>
+                    new CustomerListCustomersViewModel.ListCustomerViewModel
+                    {
+                        CustomerId = dbCustomer.CustomerId,
+                        Address = dbCustomer.Streetaddress,
+                        FullName = dbCustomer.Givenname + " " + dbCustomer.Surname,
+                        City = dbCustomer.City,
+                        PersonalNumber = dbCustomer.Birthday
+                    }).ToList(),
+
+                q = q,
+                Page = page,
+                TotalPages = (int)Math.Ceiling(pageCount)
+            };
+
+            return View(viewModel);
+        }
     }
 }
