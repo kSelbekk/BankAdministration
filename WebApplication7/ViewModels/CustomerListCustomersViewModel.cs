@@ -9,7 +9,7 @@ namespace WebApplication7.ViewModels
         {
             public int CustomerId { get; set; }
             public string FullName { get; set; }
-            public DateTime? PersonalNumber { get; set; } = new DateTime();
+            public string PersonalNumber { get; set; }
             public string Address { get; set; }
             public string City { get; set; }
         }

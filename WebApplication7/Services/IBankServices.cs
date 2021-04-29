@@ -8,9 +8,7 @@ namespace WebApplication7.Services
     {
         public IQueryable<Dispositions> GetAllDispositionsFromDatabase();
 
-        public Customers GetSpecificCustomerFromDatabase(int id);
-
-        public IQueryable<Dispositions> GetBankAccountsFromCustomer(int id);
+        public IQueryable<Dispositions> GetSpecificDispositions(int id);
 
         public IQueryable<Customers> GetAllCustomersFromDatabase();
 

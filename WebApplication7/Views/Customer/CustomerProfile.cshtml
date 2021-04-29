@@ -25,7 +25,7 @@
                                     <th>Streetaddress</th>
                                     <th>Gender</th>
                                     <th>Zipcode</th>
-                                    <th>NationalId</th>
+                                    <th>Personal number</th>
                                     <th>Telephonenumber Country Code</th>
                                     <th>Telephonenumber</th>
                                 </tr>
@@ -73,7 +73,9 @@
                             @foreach (var i in Model.Account)
                             {
                                 <td>
-                                    <a asp-action="ListTransactionsForCustomer" asp-route-id="@i.AccountId"><h3>@i.AccountId</h3></a>
+                                    <a asp-action="TransactionsForCustomer" asp-route-id="@i.AccountId">
+                                        <h3>@i.AccountId</h3>
+                                    </a>
                                 </td>
                                 <td>
                                     <h3>@String.Format("{0:C}", i.Balance)</h3>
@@ -90,3 +92,17 @@
         </div>
     </div>
 </div>
+
+@*@section Scripts
+    {
+        <script>
+            function FetchTransactions(id) {
+                $.ajax({
+                    url: "/Customer/ListTransactionsForCustomer/" + id,
+                    success: function (result) {
+                        $('#GetTransactions').html(result);
+                    }
+                });
+            }
+        </script>
+    }*@

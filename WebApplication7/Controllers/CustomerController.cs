@@ -19,17 +19,15 @@ namespace WebApplication7.Controllers
         // GET
         public IActionResult CustomerProfile(int id)
         {
-            var dbCustomer = _bankServices.GetSpecificCustomerFromDatabase(id);
+            var query = _bankServices.GetSpecificDispositions(id);
 
-            if (dbCustomer == null) return View();
-
-            var query = _bankServices.GetBankAccountsFromCustomer(id);
-
-            var totBalAccountsList = query.Select(a => a.Account.Balance).Sum();
+            var totBalanceAccount = query.Select(a => a.Account.Balance).Sum();
+            var type = query.First(a => a.CustomerId == id);
 
             var account = query.Select(a => a.Account).ToList();
+            var dbCustomer = query.Select(c => c.Customer).First(i => i.CustomerId == id);
 
-            var type = query.First(a => a.CustomerId == id);
+            if (dbCustomer == null) return View();
 
             var viewModel = new CustomerCustomerProfileViewModel
             {
@@ -48,7 +46,7 @@ namespace WebApplication7.Controllers
                 Telephonenumber = dbCustomer.Telephonenumber,
                 Zipcode = dbCustomer.Zipcode,
                 Account = account,
-                TotalBalance = totBalAccountsList,
+                TotalBalance = totBalanceAccount,
                 Type = type.Type
             };
             return View(viewModel);
@@ -77,7 +75,7 @@ namespace WebApplication7.Controllers
                         Address = dbCustomer.Streetaddress,
                         FullName = dbCustomer.Givenname + " " + dbCustomer.Surname,
                         City = dbCustomer.City,
-                        PersonalNumber = dbCustomer.Birthday
+                        PersonalNumber = dbCustomer.NationalId
                     }).ToList(),
 
                 q = q,
@@ -88,11 +86,18 @@ namespace WebApplication7.Controllers
             return View(viewModel);
         }
 
-        public IActionResult ListTransactionsForCustomer(int id)
+        public IActionResult TransactionsForCustomer(int id, int pageSize = 20, int page = 1)
         {
+            var query = _bankServices.GetAllTransactionsFromSpecificCustomer(id);
+            var totalRowCount = query.Count();
+
+            var pageCount = (double)totalRowCount / pageSize;
+            var howManyToSKip = (page - 1) * pageSize;
+            query = query.Skip(howManyToSKip).Take(pageSize);
+
             var viewModel = new CustomerListTransactionsForCustomerViewModel
             {
-                CustomerTransactions = _bankServices.GetAllTransactionsFromSpecificCustomer(id).Take(20).Select(p =>
+                CustomerTransactions = query.Select(p =>
                     new CustomerListTransactionsForCustomerViewModel.CustomerTransaction
                     {
                         Balance = p.Balance,
