@@ -2,32 +2,14 @@
 
 <div class="col-md-12">
     <div class="card">
-        <div class="card-header card-header-primary">
-            <h4 class="card-title ">Account Info</h4>
-        </div>
-        <div class="card-body">
-            <div class="table-responsive">
-                <table class="table">
-                    <thead class=" text-primary">
-                        <tr>
-                            <th>ID</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>
-                                <h3>ett nummer</h3>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+        <div class="card-header card-header-primary mb-3">
+            <h4 class="card-title ">Account Id - @Model.AccountId</h4>
         </div>
     </div>
 </div>
 <div class="card pt-3">
     <div class="card-header card-header-primary">
-        <h4 class="card-title ">Transaction Info</h4>
+        <h4 class="card-title ">Transactions</h4>
     </div>
     <div class="card-body table-responsive">
         <table class="table table-hover">
@@ -36,29 +18,39 @@
                     <th>Transaction Id</th>
                     <th>Amount</th>
                     <th>Balance</th>
+                    <th>To account</th>
                     <th>Bank</th>
                     <th>Operation</th>
                     <th>Symbol</th>
                     <th>Transaction Date</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="transactions">
                 @foreach (var i in Model.CustomerTransactions)
                 {
-                    <tr>
-                        <td>@i.TransactionId</td>
-                        <td>@String.Format("{0:c}", i.Amount)</td>
-                        <td>@String.Format("{0:c}", i.Balance)</td>
-                        <td>@i.Bank</td>
-                        <td>@i.Operation</td>
-                        <td>@i.Symbol</td>
-                        <td>@String.Format("{0:F}", i.TransactionDate)</td>
-                    </tr>
+                    <partial name="_TransactionRows" model="@i" />
                 }
             </tbody>
         </table>
         <div class="card-footer">
-            <button class="btn btn-primary">Load more...</button>
+            <button class="btn btn-primary" onclick="fetch15more(@Model.AccountId);">Load more...</button>
         </div>
     </div>
 </div>
+
+@section Scripts
+{
+    <script>
+        var skip = 0;
+
+        function fetch15more(id) {
+            skip = skip + 15;
+            $.ajax({
+                url: "/Customer/GetTransactions?id=" + id + "&skip=" + skip,
+                success: function (result) {
+                    $("#transactions").append(result);
+                }
+            });
+        }
+    </script>
+}

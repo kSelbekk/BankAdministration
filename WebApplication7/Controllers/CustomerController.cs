@@ -86,14 +86,9 @@ namespace WebApplication7.Controllers
             return View(viewModel);
         }
 
-        public IActionResult TransactionsForCustomer(int id, int pageSize = 20, int page = 1)
+        public IActionResult TransactionsForCustomer(int id)
         {
-            var query = _bankServices.GetAllTransactionsFromSpecificCustomer(id);
-            var totalRowCount = query.Count();
-
-            var pageCount = (double)totalRowCount / pageSize;
-            var howManyToSKip = (page - 1) * pageSize;
-            query = query.Skip(howManyToSKip).Take(pageSize);
+            var query = _bankServices.GetAllTransactionsFromSpecificCustomer(id, 0, 15);
 
             var viewModel = new CustomerListTransactionsForCustomerViewModel
             {
@@ -110,7 +105,29 @@ namespace WebApplication7.Controllers
                         TransactionDate = p.Date,
                         TransactionId = p.TransactionId
                     }).ToList(),
+                AccountId = id
             };
+
+            return View(viewModel);
+        }
+
+        public IActionResult GetTransactions(int id, int skip)
+        {
+            var viewModel = new CustomerListTransactionsForCustomerViewModel.TransactionsFromViewModel();
+
+            viewModel.CustomerTransactions = _bankServices.GetAllTransactionsFromSpecificCustomer(id, skip, 15).Select(
+                p => new CustomerListTransactionsForCustomerViewModel.CustomerTransaction
+                {
+                    Balance = p.Balance,
+                    Type = p.Type,
+                    Account = p.Account,
+                    Amount = p.Amount,
+                    Bank = p.Bank,
+                    Operation = p.Operation,
+                    Symbol = p.Symbol,
+                    TransactionDate = p.Date,
+                    TransactionId = p.TransactionId
+                }).ToList();
 
             return View(viewModel);
         }

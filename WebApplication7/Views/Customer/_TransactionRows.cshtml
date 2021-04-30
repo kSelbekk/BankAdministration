@@ -1,0 +1,16 @@
+﻿@model WebApplication7.ViewModels.CustomerListTransactionsForCustomerViewModel.CustomerTransaction
+
+@{
+    Layout = null;
+}
+
+<tr>
+    <td>@Model.TransactionId</td>
+    <td>@String.Format("{0:c}", Model.Amount)</td>
+    <td>@String.Format("{0:c}", Model.Balance)</td>
+    <td>@Model.Account</td>
+    <td>@Model.Bank</td>
+    <td>@Model.Operation</td>
+    <td>@Model.Symbol</td>
+    <td>@String.Format("{0:F}", Model.TransactionDate)</td>
+</tr>

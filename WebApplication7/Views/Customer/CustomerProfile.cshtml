@@ -92,17 +92,3 @@
         </div>
     </div>
 </div>
-
-@*@section Scripts
-    {
-        <script>
-            function FetchTransactions(id) {
-                $.ajax({
-                    url: "/Customer/ListTransactionsForCustomer/" + id,
-                    success: function (result) {
-                        $('#GetTransactions').html(result);
-                    }
-                });
-            }
-        </script>
-    }*@

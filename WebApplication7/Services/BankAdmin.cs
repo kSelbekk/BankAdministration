@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using WebApplication7.Models;
 
@@ -28,9 +29,9 @@ namespace WebApplication7.Services
             return _bankAppDataContext.Customers;
         }
 
-        public IQueryable<Transactions> GetAllTransactionsFromSpecificCustomer(int id)
+        public IQueryable<Transactions> GetAllTransactionsFromSpecificCustomer(int id, int skip, int take)
         {
-            return _bankAppDataContext.Transactions.Where(c => c.AccountId == id).OrderByDescending(a => a);
+            return _bankAppDataContext.Transactions.Where(c => c.AccountId == id).Skip(skip).Take(take).OrderByDescending(a => a);
         }
     }
 }

@@ -1,0 +1,10 @@
+﻿@model WebApplication7.ViewModels.CustomerListTransactionsForCustomerViewModel.TransactionsFromViewModel
+
+@{
+    Layout = null;
+}
+
+@foreach (var i in Model.CustomerTransactions)
+{
+    <partial name="_TransactionRows" model="@i" />
+}
