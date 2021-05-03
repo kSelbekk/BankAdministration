@@ -27,31 +27,31 @@
                         <span asp-validation-for="AmountToSend" class="field-validation-error"></span>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label asp-for="Bank" class="bmd-label-floating">Bank</label>
-                        <input asp-for="Bank" class="form-control">
-                        <span asp-validation-for="Bank" class="field-validation-error"></span>
-                    </div>
-                </div>
             </div>
             <div class="col-md-12">
                 <div class="form-group">
                     <div class="form-group">
-                        <label asp-for="MessageForSender" class="bmd-label-floating">Message for sender</label>
+                        <label asp-for="MessageForSender" class="bmd-label-floating">Message</label>
                         <input asp-for="MessageForSender" class="form-control" rows="5" />
                         <span asp-validation-for="MessageForSender" class="field-validation-error"></span>
                     </div>
                 </div>
             </div>
-            <br />
-
-            <div class="row">
-                <div class="col-md-12">
+            <hr />
+            <h5>To account</h5>
+            <div class="row mt-3">
+                <div class="col-md-4">
                     <div class="form-group">
                         <label asp-for="ToAccountId" class="bmd-label-floating">To Account Id</label>
                         <input asp-for="ToAccountId" class="form-control">
                         <span asp-validation-for="ToAccountId" class="field-validation-error"></span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label asp-for="Bank" class="bmd-label-floating">Bank</label>
+                        <input asp-for="Bank" class="form-control">
+                        <span asp-validation-for="Bank" class="field-validation-error"></span>
                     </div>
                 </div>
                 <div class="col-md-12">

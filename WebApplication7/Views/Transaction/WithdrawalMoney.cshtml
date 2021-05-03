@@ -15,6 +15,7 @@
                     <div class="form-group">
                         <label asp-for="FromAccountId" class="bmd-label-floating">From Account Id</label>
                         <input asp-for="FromAccountId" class="form-control">
+                        <span asp-validation-for="FromAccountId" class="field-validation-error"></span>
                     </div>
                 </div>
             </div>
@@ -23,12 +24,14 @@
                     <div class="form-group">
                         <label asp-for="AmountToWithdrawal" class="bmd-label-floating">Amount</label>
                         <input asp-for="AmountToWithdrawal" class="form-control">
+                        <span asp-validation-for="AmountToWithdrawal" class="field-validation-error"></span>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
                         <label asp-for="Type" class="bmd-label-floating">Type</label>
                         <input asp-for="Type" class="form-control">
+                        <span asp-validation-for="Type" class="field-validation-error"></span>
                     </div>
                 </div>
             </div>
@@ -37,6 +40,7 @@
                     <div class="form-group">
                         <label asp-for="MessageForSender" class="bmd-label-floating">Message</label>
                         <input asp-for="MessageForSender" class="form-control" rows="5" />
+                        <span asp-validation-for="MessageForSender" class="field-validation-error"></span>
                     </div>
                 </div>
             </div>
