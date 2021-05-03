@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Net;
 using Microsoft.AspNetCore.Mvc;
 using WebApplication7.Models;
@@ -40,34 +41,63 @@ namespace WebApplication7.Controllers
         {
             if (!ModelState.IsValid) return View(viewModel);
 
-            var senderTransaction = new Transactions();
+            var senderAccount = _bankServices.GetSpecificAccountFromDatabase(viewModel.FromAccountId);
 
-            var senderAccountBalance =
-                _bankServices.GetSpecificAccountFromDatabase(viewModel.FromAccountId).Balance;
+            var receiverAccount = _bankServices.GetSpecificAccountFromDatabase(viewModel.ToAccountId);
 
-            if (senderAccountBalance < viewModel.AmountToSend)
+            viewModel.Operation = receiverAccount == null ? "Remittance to Another Bank" : "Withdrawal in cash";
+
+            if (senderAccount == null)
+            {
+                ModelState.AddModelError("FromAccountId", "No account found");
+                return View(viewModel);
+            }
+
+            if (senderAccount.Balance < viewModel.AmountToSend)
             {
                 ModelState.AddModelError("AmountToSend", "You dont have ennough money");
                 return View(viewModel);
             }
 
-            var newAccountBalance = _bankServices.GetSpecificAccountFromDatabase(viewModel.FromAccountId).Balance -
-                                    viewModel.AmountToSend;
+            senderAccount.Balance -= viewModel.AmountToSend;
 
-            senderTransaction.AccountId = viewModel.FromAccountId;
-            senderTransaction.Bank = viewModel.Bank;
-            senderTransaction.Account = viewModel.ToAccountId.ToString();
-            senderTransaction.Balance = newAccountBalance;
-            senderTransaction.Amount = viewModel.AmountToSend;
-            senderTransaction.Type = "Debit";
-            senderTransaction.Date = viewModel.TransactionDate;
-
-            //sender type = depit receiver = credit
-
-            if (viewModel.ToAccountId != null)
+            var senderTransaction = new Transactions
             {
-                var receiverTranasactions = new Transactions();
+                AccountId = viewModel.FromAccountId,
+                Bank = viewModel.Bank,
+                Account = viewModel.ToAccountId.ToString(),
+                Balance = senderAccount.Balance - viewModel.AmountToSend,
+                Amount = viewModel.AmountToSend * -1,
+                Type = "Debit",
+                Date = DateTime.Now,
+                Operation = viewModel.Operation,
+                Symbol = viewModel.MessageForSender,
+                AccountNavigation = senderAccount
+            };
+
+            if (receiverAccount != null)
+            {
+                viewModel.Operation = "Credit in Cash";
+                receiverAccount.Balance += viewModel.AmountToSend;
+
+                var receiverTransaction = new Transactions
+                {
+                    AccountId = viewModel.ToAccountId,
+                    Bank = null,
+                    Balance = receiverAccount.Balance + viewModel.AmountToSend,
+                    Type = "Credit",
+                    Date = DateTime.Now,
+                    Account = viewModel.FromAccountId.ToString(),
+                    Operation = viewModel.Operation,
+                    Amount = viewModel.AmountToSend,
+                    Symbol = viewModel.MessageForReceiver,
+                    AccountNavigation = receiverAccount
+                };
+                _appDataContext.Add(receiverTransaction);
             }
+
+            _appDataContext.Add(senderTransaction);
+            _appDataContext.SaveChanges();
 
             return RedirectToAction("SendMoney");
         }

@@ -10,7 +10,7 @@ namespace WebApplication7.ViewModels
         public int FromAccountId { get; set; }
 
         [Range(1, Double.MaxValue, ErrorMessage = "Input a valid account-id")]
-        public int? ToAccountId { get; set; }
+        public int ToAccountId { get; set; }
 
         [Required]
         [DataType(DataType.Currency)]
@@ -31,10 +31,5 @@ namespace WebApplication7.ViewModels
 
         [StringLength(2)]
         public string? Bank { get; set; }
-
-        [DataType(DataType.DateTime)]
-        public DateTime TransactionDate { get; set; } = DateTime.Now;
-
-        public decimal Balance { get; set; }
     }
 }
