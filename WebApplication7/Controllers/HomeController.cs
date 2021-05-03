@@ -27,7 +27,7 @@ namespace WebApplication7.Controllers
         [ResponseCache(Duration = 30, Location = ResponseCacheLocation.Any, NoStore = false)]
         public IActionResult Index()
         {
-            var viewModel = new StartPageModel();
+            var viewModel = new HomeIndexViewModel();
 
             var query = _bankServices.GetAllDispositionsFromDatabase();
 
@@ -44,12 +44,9 @@ namespace WebApplication7.Controllers
                 .Select(p => p.AccountId)
                 .Count();
 
-            viewModel.HomeIndexViewModels = new StartPageModel.HomeIndexViewModel()
-            {
-                TotalAccounts = totalAccounts,
-                TotalBalance = totalBalance,
-                TotalCustomers = totalCustomers
-            };
+            viewModel.TotalBalance = totalBalance;
+            viewModel.TotalAccounts = totalAccounts;
+            viewModel.TotalCustomers = totalCustomers;
 
             return View(viewModel);
         }

@@ -56,16 +56,16 @@
                             <p>Customers</p>
                         </a>
                     </li>
-                    <li class="nav-item ">
-                        <a class="nav-link" href="#">
-                            <i class="material-icons">library_books</i>
-                            <p>Typography</p>
+                    <li class="nav-item @(activeController == "Transaction" ? " active" : "")">
+                        <a class="nav-link" asp-controller="Transaction" asp-action="Index">
+                            <i class="material-icons">payments</i>
+                            <p>Payments</p>
                         </a>
                     </li>
                     <li class="nav-item ">
                         <a class="nav-link" href="#">
                             <i class="material-icons">bubble_chart</i>
-                            <p>Icons</p>
+                            <p>Withdraw</p>
                         </a>
                     </li>
                     <li class="nav-item">

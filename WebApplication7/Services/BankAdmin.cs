@@ -31,7 +31,11 @@ namespace WebApplication7.Services
 
         public IQueryable<Transactions> GetAllTransactionsFromSpecificCustomer(int id, int skip, int take)
         {
-            return _bankAppDataContext.Transactions.Where(c => c.AccountId == id).Skip(skip).Take(take).OrderByDescending(a => a);
+            return _bankAppDataContext.Transactions
+                .Where(c => c.AccountId == id)
+                .OrderByDescending(a => a.Date)
+                .Skip(skip)
+                .Take(take);
         }
     }
 }
