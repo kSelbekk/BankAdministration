@@ -57,13 +57,13 @@
                         </a>
                     </li>
                     <li class="nav-item @(activeController == "Transaction" ? " active" : "")">
-                        <a class="nav-link" asp-controller="Transaction" asp-action="Index">
+                        <a class="nav-link" asp-controller="Transaction" asp-action="SendMoney">
                             <i class="material-icons">payments</i>
-                            <p>Payments</p>
+                            <p>Send money</p>
                         </a>
                     </li>
-                    <li class="nav-item ">
-                        <a class="nav-link" href="#">
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Transaction" asp-action="WithdrawalMoney">
                             <i class="material-icons">bubble_chart</i>
                             <p>Withdraw</p>
                         </a>
@@ -152,6 +152,9 @@
     <script src="~/js/plugins/chartist.min.js"></script>
     <script src="js/site.js"></script>
     <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
 
     @RenderSection("Scripts", required: false)
     <script>

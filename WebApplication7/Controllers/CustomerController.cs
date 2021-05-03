@@ -21,13 +21,12 @@ namespace WebApplication7.Controllers
         {
             var query = _bankServices.GetSpecificDispositions(id);
 
+            var dbCustomer = query.Select(c => c.Customer).FirstOrDefault(i => i.CustomerId == id);
+            if (dbCustomer == null) return RedirectToAction("Index", "Home");
+
             var totBalanceAccount = query.Select(a => a.Account.Balance).Sum();
             var type = query.First(a => a.CustomerId == id);
-
             var account = query.Select(a => a.Account).ToList();
-            var dbCustomer = query.Select(c => c.Customer).First(i => i.CustomerId == id);
-
-            if (dbCustomer == null) return View();
 
             var viewModel = new CustomerCustomerProfileViewModel
             {

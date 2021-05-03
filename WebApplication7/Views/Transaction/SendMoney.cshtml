@@ -1,0 +1,72 @@
+﻿@model WebApplication7.ViewModels.TransactionSendMoneyViewModel
+
+@{
+    ViewData["Title"] = "Send money";
+}
+
+<div class="card">
+    <div class="card-header card-header-success">
+        <h3>Send Money</h3>
+    </div>
+    <div class="card-body">
+        <form method="post" asp-action="SendMoney">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label asp-for="FromAccountId" class="bmd-label-floating">From Account Id</label>
+                        <input asp-for="FromAccountId" class="form-control">
+                        <span asp-validation-for="FromAccountId" class="field-validation-error"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label asp-for="AmountToSend" class="bmd-label-floating">Amount</label>
+                        <input asp-for="AmountToSend" class="form-control">
+                        <span asp-validation-for="AmountToSend" class="field-validation-error"></span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label asp-for="Bank" class="bmd-label-floating">Bank</label>
+                        <input asp-for="Bank" class="form-control">
+                        <span asp-validation-for="Bank" class="field-validation-error"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <div class="form-group">
+                        <label asp-for="MessageForSender" class="bmd-label-floating">Message for sender</label>
+                        <input asp-for="MessageForSender" class="form-control" rows="5" />
+                        <span asp-validation-for="MessageForSender" class="field-validation-error"></span>
+                    </div>
+                </div>
+            </div>
+            <br />
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label asp-for="ToAccountId" class="bmd-label-floating">To Account Id</label>
+                        <input asp-for="ToAccountId" class="form-control">
+                        <span asp-validation-for="ToAccountId" class="field-validation-error"></span>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <div class="form-group">
+                            <label asp-for="MessageForReceiver" class="bmd-label-floating">Message for receiver</label>
+                            <input asp-for="MessageForReceiver" class="form-control" rows="5" />
+                            <span asp-validation-for="MessageForReceiver" class="field-validation-error"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary pull-right">send</button>
+            <div class="clearfix"></div>
+        </form>
+    </div>
+</div>

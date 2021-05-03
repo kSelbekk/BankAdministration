@@ -37,5 +37,10 @@ namespace WebApplication7.Services
                 .Skip(skip)
                 .Take(take);
         }
+
+        public Accounts GetSpecificAccountFromDatabase(int id)
+        {
+            return _bankAppDataContext.Accounts.FirstOrDefault(i => i.AccountId.Equals(id));
+        }
     }
 }
