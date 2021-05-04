@@ -36,8 +36,10 @@ namespace WebApplication7
             services.AddDbContext<BankAppDataContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
+
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddRoles<IdentityRole>()
+
                 .AddEntityFrameworkStores<BankAppDataContext>();
             services.AddControllersWithViews();
             services.AddRazorPages();

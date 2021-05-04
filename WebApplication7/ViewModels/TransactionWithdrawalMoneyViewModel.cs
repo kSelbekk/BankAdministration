@@ -19,6 +19,6 @@ namespace WebApplication7.ViewModels
         [Range(1, Double.MaxValue, ErrorMessage = "Input a valid amount")]
         public decimal AmountToWithdrawal { get; set; }
 
-        public string Type { get; set; }
+        public string Operation { get; set; }
     }
 }

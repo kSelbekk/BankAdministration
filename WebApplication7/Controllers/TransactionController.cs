@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Net;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
 using Microsoft.EntityFrameworkCore;
@@ -20,9 +21,12 @@ namespace WebApplication7.Controllers
 
     public class TransactionController : BaseController
     {
-        public TransactionController(BankAppDataContext appDataContext, IBankServices bankServices)
+        private readonly SignInManager<IdentityUser> _userManager;
+
+        public TransactionController(BankAppDataContext appDataContext, IBankServices bankServices, SignInManager<IdentityUser> userManager)
             : base(appDataContext, bankServices)
         {
+            _userManager = userManager;
         }
 
         public IActionResult DepositMoeny()
@@ -41,25 +45,32 @@ namespace WebApplication7.Controllers
         {
             if (!ModelState.IsValid) return View(viewModel);
 
-            var withdrawlaccount = _bankServices.GetSpecificAccountFromDatabase(viewModel.FromAccountId);
+            var withdrawlAccount = _bankServices.GetSpecificAccountFromDatabase(viewModel.FromAccountId);
 
-            if (withdrawlaccount == null)
+            if (withdrawlAccount == null)
             {
                 ModelState.AddModelError("FromAccountId", "No account found");
                 return View(viewModel);
             }
 
+            withdrawlAccount.Balance -= viewModel.AmountToWithdrawal;
+
+            viewModel.Operation = _userManager.IsSignedIn(User) ? "Credit Card Withdrawal" : "Withdrawal in Cash";
+
             var withdrawlTransaction = new Transactions
             {
                 AccountId = viewModel.FromAccountId,
-                AccountNavigation = withdrawlaccount,
+                AccountNavigation = withdrawlAccount,
                 Amount = viewModel.AmountToWithdrawal,
-                Balance = withdrawlaccount.Balance - viewModel.AmountToWithdrawal * -1,
+                Balance = withdrawlAccount.Balance - viewModel.AmountToWithdrawal * -1,
                 Date = DateTime.Now,
-                Operation = "Credit Card Withdrawal",
+                Operation = viewModel.Operation,
                 Type = "Debit",
                 Symbol = viewModel.MessageForSender
             };
+
+            _appDataContext.Add(withdrawlTransaction);
+            _appDataContext.SaveChanges();
 
             return RedirectToAction("WithdrawalMoney");
         }
