@@ -2,6 +2,8 @@
 using System.Linq;
 using System.Net;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ViewEngines;
+using Microsoft.EntityFrameworkCore;
 using WebApplication7.Models;
 using WebApplication7.Services;
 using WebApplication7.ViewModels;
@@ -9,7 +11,6 @@ using WebApplication7.ViewModels;
 namespace WebApplication7.Controllers
 {
     //Credit                              Okänd insättning...
-    //Collection from Another Bank        nån på annan bank har betalat in på ditt konto
     //Credit in Cash                      insättning cash
     //Credit Card Withdrawal              uttag bankomat
     //Remittance to Another Bank          du överför pengar till en annan bank
@@ -24,10 +25,43 @@ namespace WebApplication7.Controllers
         {
         }
 
+        public IActionResult DepositMoeny()
+        {
+            return View();
+        }
+
         public IActionResult WithdrawalMoney()
         {
             var viewModel = new TransactionWithdrawalMoneyViewModel();
             return View(viewModel);
+        }
+
+        [HttpPost]
+        public IActionResult WithdrawalMoney(TransactionWithdrawalMoneyViewModel viewModel)
+        {
+            if (!ModelState.IsValid) return View(viewModel);
+
+            var withdrawlaccount = _bankServices.GetSpecificAccountFromDatabase(viewModel.FromAccountId);
+
+            if (withdrawlaccount == null)
+            {
+                ModelState.AddModelError("FromAccountId", "No account found");
+                return View(viewModel);
+            }
+
+            var withdrawlTransaction = new Transactions
+            {
+                AccountId = viewModel.FromAccountId,
+                AccountNavigation = withdrawlaccount,
+                Amount = viewModel.AmountToWithdrawal,
+                Balance = withdrawlaccount.Balance - viewModel.AmountToWithdrawal * -1,
+                Date = DateTime.Now,
+                Operation = "Credit Card Withdrawal",
+                Type = "Debit",
+                Symbol = viewModel.MessageForSender
+            };
+
+            return RedirectToAction("WithdrawalMoney");
         }
 
         public IActionResult SendMoney()

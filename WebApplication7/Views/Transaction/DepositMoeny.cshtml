@@ -1,0 +1,53 @@
+﻿@model WebApplication7.ViewModels.TransactionDepositMoenyViewModel
+
+@{
+    ViewData["Title"] = "Withdrawal";
+}
+
+<div class="card">
+    <div class="card-header card-header-danger">
+        <h3>Deposit money</h3>
+    </div>
+    <div class="card-body">
+        <form method="post" asp-action="DepositMoeny">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label asp-for="ToAccountId" class="bmd-label-floating">To Account Id</label>
+                        <input asp-for="ToAccountId" class="form-control">
+                        <span asp-validation-for="ToAccountId" class="field-validation-error"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label asp-for="AmountToDeposit" class="bmd-label-floating">Amount</label>
+                        <input asp-for="AmountToDeposit" class="form-control">
+                        <span asp-validation-for="AmountToDeposit" class="field-validation-error"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label asp-for="Bank" class="bmd-label-floating">Bank</label>
+                        <input asp-for="Bank" class="form-control">
+                        <span asp-validation-for="Bank" class="field-validation-error"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <div class="form-group">
+                        <label asp-for="MessageForSender" class="bmd-label-floating">Message</label>
+                        <input asp-for="MessageForSender" class="form-control" rows="5" />
+                        <span asp-validation-for="MessageForSender" class="field-validation-error"></span>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary pull-right">Deposit</button>
+            <div class="clearfix"></div>
+        </form>
+    </div>
+</div>

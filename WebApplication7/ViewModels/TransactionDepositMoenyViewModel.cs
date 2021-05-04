@@ -1,14 +1,13 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using System.Diagnostics.CodeAnalysis;
 
 namespace WebApplication7.ViewModels
 {
-    public class TransactionWithdrawalMoneyViewModel
+    public class TransactionDepositMoenyViewModel
     {
         [Required]
         [Range(1, Double.MaxValue, ErrorMessage = "Input a valid account-id")]
-        public int FromAccountId { get; set; }
+        public int ToAccountId { get; set; }
 
         //Symbol in database
         [MaxLength(50)]
@@ -17,8 +16,9 @@ namespace WebApplication7.ViewModels
         [Required]
         [DataType(DataType.Currency)]
         [Range(1, Double.MaxValue, ErrorMessage = "Input a valid amount")]
-        public decimal AmountToWithdrawal { get; set; }
+        public decimal AmountToDeposit { get; set; }
 
-        public string Type { get; set; }
+        [MaxLength(2)]
+        public string Bank { get; set; }
     }
 }
