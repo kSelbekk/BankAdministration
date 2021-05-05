@@ -14,7 +14,7 @@ namespace WebApplication7.Data
             SeedData(applicationDbContext, userManager);
         }
 
-        public static void SeedData(BankAppDataContext applicationDbContext, UserManager<IdentityUser> userManager)
+        private static void SeedData(BankAppDataContext applicationDbContext, UserManager<IdentityUser> userManager)
         {
             SeedRoles(applicationDbContext);
             SeedUsers(userManager);
@@ -26,7 +26,7 @@ namespace WebApplication7.Data
             AddNewRoleIfNotExists(applicationDbContext, "Cashier");
         }
 
-        public static void SeedUsers(UserManager<IdentityUser> userManager)
+        private static void SeedUsers(UserManager<IdentityUser> userManager)
         {
             AddToRoleIfNotExists(userManager, "stefan.holmberg@systementor.se", "Hejsan123#", new[] { "Admin" });
             AddToRoleIfNotExists(userManager, "stefan.holmberg@nackademin.se", "Hejsan123#", new[] { "Cashier" });

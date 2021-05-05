@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Net;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
@@ -19,6 +20,7 @@ namespace WebApplication7.Controllers
 
     //om du betalar till en annan i samma bank så kan du köra Withdrawal in cash på ditt konto.Och Credit in Cash på mottagaren
 
+    //[Authorize(Roles = "Cashier")]
     public class TransactionController : BaseController
     {
         private readonly SignInManager<IdentityUser> _userManager;
@@ -27,6 +29,11 @@ namespace WebApplication7.Controllers
             : base(appDataContext, bankServices)
         {
             _userManager = userManager;
+        }
+
+        public IActionResult Index()
+        {
+            return View();
         }
 
         public IActionResult DepositMoney()
