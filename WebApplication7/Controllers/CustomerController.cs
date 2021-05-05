@@ -19,14 +19,8 @@ namespace WebApplication7.Controllers
         // GET
         public IActionResult CustomerProfile(int id)
         {
-            var query = _bankServices.GetSpecificDispositions(id);
-
-            var dbCustomer = query.Select(c => c.Customer).FirstOrDefault(i => i.CustomerId == id);
+            var dbCustomer = _bankServices.GetSpecificCustomer(id);
             if (dbCustomer == null) return RedirectToAction("Index", "Home");
-
-            var totBalanceAccount = query.Select(a => a.Account.Balance).Sum();
-            var type = query.First(a => a.CustomerId == id);
-            var account = query.Select(a => a.Account).ToList();
 
             var viewModel = new CustomerCustomerProfileViewModel
             {
@@ -44,9 +38,8 @@ namespace WebApplication7.Controllers
                 TelephoneCountryCode = dbCustomer.Telephonecountrycode,
                 Telephonenumber = dbCustomer.Telephonenumber,
                 Zipcode = dbCustomer.Zipcode,
-                Account = account,
-                TotalBalance = totBalanceAccount,
-                Type = type.Type
+                TotalBalance = dbCustomer.Dispositions.Select(a => a.Account.Balance).Sum(),
+                Dispositions = dbCustomer.Dispositions.ToList()
             };
             return View(viewModel);
         }

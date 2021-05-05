@@ -19,9 +19,12 @@ namespace WebApplication7.Services
             return _bankAppDataContext.Dispositions;
         }
 
-        public IQueryable<Dispositions> GetSpecificDispositions(int id)
+        public Customers GetSpecificCustomer(int id)
         {
-            return _bankAppDataContext.Dispositions.Where(a => a.DispositionId == id);
+            return _bankAppDataContext.Customers
+                .Include(a => a.Dispositions)
+                .ThenInclude(a => a.Account)
+                .FirstOrDefault(a => a.CustomerId == id);
         }
 
         public IQueryable<Customers> GetAllCustomersFromDatabase()

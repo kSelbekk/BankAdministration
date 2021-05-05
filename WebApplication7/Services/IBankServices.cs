@@ -8,12 +8,12 @@ namespace WebApplication7.Services
     {
         public IQueryable<Dispositions> GetAllDispositionsFromDatabase();
 
-        public IQueryable<Dispositions> GetSpecificDispositions(int id);
-
         public IQueryable<Customers> GetAllCustomersFromDatabase();
 
         public IQueryable<Transactions> GetAllTransactionsFromSpecificCustomer(int id, int skip, int take);
 
         public Accounts GetSpecificAccountFromDatabase(int id);
+
+        public Customers GetSpecificCustomer(int id);
     }
 }

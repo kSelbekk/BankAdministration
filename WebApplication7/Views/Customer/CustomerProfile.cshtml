@@ -70,7 +70,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            @foreach (var i in Model.Account)
+                            @foreach (var i in Model.Dispositions)
                             {
                                 <td>
                                     <a asp-action="TransactionsForCustomer" asp-route-id="@i.AccountId">
@@ -78,10 +78,10 @@
                                     </a>
                                 </td>
                                 <td>
-                                    <h3>@String.Format("{0:C}", i.Balance)</h3>
+                                    <h3>@String.Format("{0:C}", i.Account.Balance)</h3>
                                 </td>
                                 <td>
-                                    <h3>@Model.Type</h3>
+                                    <h3>@i.Type</h3>
                                 </td>
                             }
                         </tr>

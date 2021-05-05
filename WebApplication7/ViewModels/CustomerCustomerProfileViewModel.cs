@@ -20,8 +20,7 @@ namespace WebApplication7.ViewModels
         public string? TelephoneCountryCode { get; set; }
         public string? Telephonenumber { get; set; }
         public string? Emailaddress { get; set; }
-        public List<Accounts> Account { get; set; }
         public decimal TotalBalance { get; set; }
-        public string Type { get; set; }
+        public List<Dispositions> Dispositions { get; set; }
     }
 }
