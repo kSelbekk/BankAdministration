@@ -11,7 +11,7 @@ namespace WebApplication7.ViewModels
 
         //Symbol in database
         [MaxLength(50)]
-        public string MessageForSender { get; set; }
+        public string MessageForReceiver { get; set; }
 
         [Required]
         [DataType(DataType.Currency)]
@@ -20,5 +20,7 @@ namespace WebApplication7.ViewModels
 
         [MaxLength(2)]
         public string Bank { get; set; }
+
+        public string Operation { get; set; }
     }
 }

@@ -29,8 +29,43 @@ namespace WebApplication7.Controllers
             _userManager = userManager;
         }
 
-        public IActionResult DepositMoeny()
+        public IActionResult DepositMoney()
         {
+            var viewModel = new TransactionDepositMoenyViewModel();
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public IActionResult DepositMoney(TransactionDepositMoenyViewModel viewModel)
+        {
+            if (!ModelState.IsValid) return View(viewModel);
+            var depositAccount = _bankServices.GetSpecificAccountFromDatabase(viewModel.ToAccountId);
+
+            if (depositAccount == null)
+            {
+                ModelState.AddModelError("FromAccountId", "No account found");
+                return View(viewModel);
+            }
+
+            viewModel.Operation = viewModel.Bank == null ? "Credit" : "Collection from Another Bank";
+
+            var depositTransaction = new Transactions
+            {
+                AccountId = viewModel.ToAccountId,
+                Amount = viewModel.AmountToDeposit,
+                Bank = viewModel.Bank,
+                Balance = depositAccount.Balance + viewModel.AmountToDeposit,
+                Date = DateTime.Now,
+                Operation = viewModel.Operation,
+                Type = "Credit",
+                AccountNavigation = depositAccount,
+                Symbol = viewModel.MessageForReceiver
+            };
+
+            depositAccount.Balance += viewModel.AmountToDeposit;
+
+            _appDataContext.Add(depositTransaction);
+            _appDataContext.SaveChanges();
             return View();
         }
 
@@ -53,8 +88,6 @@ namespace WebApplication7.Controllers
                 return View(viewModel);
             }
 
-            withdrawlAccount.Balance -= viewModel.AmountToWithdrawal;
-
             viewModel.Operation = _userManager.IsSignedIn(User) ? "Credit Card Withdrawal" : "Withdrawal in Cash";
 
             var withdrawlTransaction = new Transactions
@@ -68,6 +101,7 @@ namespace WebApplication7.Controllers
                 Type = "Debit",
                 Symbol = viewModel.MessageForSender
             };
+            withdrawlAccount.Balance -= viewModel.AmountToWithdrawal;
 
             _appDataContext.Add(withdrawlTransaction);
             _appDataContext.SaveChanges();
