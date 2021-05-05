@@ -25,7 +25,7 @@ namespace WebApplication7
                 var r = serviceProvider.GetRequiredService<BankAppDataContext>();
                 var userManager = serviceProvider.GetRequiredService<UserManager<IdentityUser>>();
                 var initializer = new DataInitializer();
-                initializer.InitializeDatabase(r);
+                initializer.InitializeDatabase(r, userManager);
             }
 
             host.Run();

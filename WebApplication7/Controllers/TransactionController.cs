@@ -88,6 +88,12 @@ namespace WebApplication7.Controllers
                 return View(viewModel);
             }
 
+            if (withdrawlAccount.Balance < viewModel.AmountToWithdrawal)
+            {
+                ModelState.AddModelError("AmountToWithdrawal", "You don't have enough money");
+                return View(viewModel);
+            }
+
             viewModel.Operation = _userManager.IsSignedIn(User) ? "Credit Card Withdrawal" : "Withdrawal in Cash";
 
             var withdrawlTransaction = new Transactions
