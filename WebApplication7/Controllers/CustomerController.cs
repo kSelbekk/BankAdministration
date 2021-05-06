@@ -19,7 +19,7 @@ namespace WebApplication7.Controllers
         // GET
         public IActionResult CustomerProfile(int id)
         {
-            var dbCustomer = _bankServices.GetSpecificCustomer(id);
+            var dbCustomer = _bankServices.GetSpecificCustomerInformation(id);
             if (dbCustomer == null) return RedirectToAction("Index", "Home");
 
             var viewModel = new CustomerCustomerProfileViewModel

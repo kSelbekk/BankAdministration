@@ -14,6 +14,6 @@ namespace WebApplication7.Services
 
         public Accounts GetSpecificAccountFromDatabase(int id);
 
-        public Customers GetSpecificCustomer(int id);
+        public Customers GetSpecificCustomerInformation(int id);
     }
 }

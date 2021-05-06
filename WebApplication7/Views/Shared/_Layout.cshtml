@@ -39,12 +39,30 @@
             <div class="sidebar-wrapper">
                 <ul class="nav">
                     <partial name="_LoginPartial" />
+
                     <li class="nav-item @(activeController == "Admin" ? " active" : "")">
-                        <a class="nav-link" href="#">
+
+                        <a href="#" class="nav-link" data-toggle="dropdown">
                             <i class="material-icons">admin_panel_settings</i>
                             <p>Admin</p>
                         </a>
+
+                        <ul class="dropdown-menu show-dropdown bg-dark">
+                            <li class="button-container m-2 p-1">
+                                <a href="#" class="btn btn-primary btn-block">
+                                    <i class="material-icons">manage_accounts</i>
+                                    <p>Edit user</p>
+                                </a>
+                            </li>
+                            <li class="button-container m-2 p-1">
+                                <a href="#" class="btn btn-primary btn-block">
+                                    <i class="material-icons">person_add</i>
+                                    <p>Add user</p>
+                                </a>
+                            </li>
+                        </ul>
                     </li>
+
                     <li class="nav-item @(activeController == "Home" ? " active" : "")">
                         <a class="nav-link"
                            asp-controller="Home"
@@ -61,33 +79,37 @@
                             <p>Customers</p>
                         </a>
                     </li>
-                    @*<li class="nav-item ">
-                            <a class="nav-link" asp-controller="Transaction" asp-action="Index">
-                                <i class="material-icons">home</i>
-                                <p>Transactions</p>
-                            </a>
-                        </li>*@
-                    @if (SignInManager.IsSignedIn(User) && User.IsInRole("Cashier"))
-                    {
-                        <li class="nav-item @(activeController == "Transaction" ? " active" : "")">
-                            <a class="nav-link" asp-controller="Transaction" asp-action="SendMoney">
-                                <i class="material-icons">payments</i>
-                                <p>Send money</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="Transaction" asp-action="WithdrawalMoney">
-                                <i class="material-icons">bubble_chart</i>
-                                <p>Withdraw</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="Transaction" asp-action="DepositMoney">
-                                <i class="material-icons">notifications</i>
-                                <p>Deposit</p>
-                            </a>
-                        </li>
-                    }
+
+                    <li class="nav-item @(activeController == "Transaction" ? " active" : "")">
+
+                        <a href="#" class="nav-link" data-toggle="dropdown">
+                            <i class="material-icons">paid</i>
+                            <p>Transactions</p>
+                        </a>
+                        @if (SignInManager.IsSignedIn(User) && User.IsInRole("Cashier"))
+                        {
+                            <ul class="dropdown-menu show-dropdown bg-dark">
+                                <li class="button-container m-2 p-1">
+                                    <a class="btn btn-primary btn-block" asp-controller="Transaction" asp-action="SendMoney">
+                                        <i class="material-icons">payments</i>
+                                        <p>Send money</p>
+                                    </a>
+                                </li>
+                                <li class="button-container m-2 p-1">
+                                    <a class="btn btn-primary btn-block" asp-controller="Transaction" asp-action="WithdrawalMoney">
+                                        <i class="material-icons">bubble_chart</i>
+                                        <p>Withdraw</p>
+                                    </a>
+                                </li>
+                                <li class="button-container m-2 p-1">
+                                    <a class="btn btn-primary btn-block" asp-controller="Transaction" asp-action="DepositMoney">
+                                        <i class="material-icons">notifications</i>
+                                        <p>Deposit</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        }
+                    </li>
                 </ul>
             </div>
         </div>

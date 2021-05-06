@@ -19,7 +19,7 @@ namespace WebApplication7.Services
             return _bankAppDataContext.Dispositions;
         }
 
-        public Customers GetSpecificCustomer(int id)
+        public Customers GetSpecificCustomerInformation(int id)
         {
             return _bankAppDataContext.Customers
                 .Include(a => a.Dispositions)

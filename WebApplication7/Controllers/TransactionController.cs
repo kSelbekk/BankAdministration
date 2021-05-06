@@ -151,8 +151,6 @@ namespace WebApplication7.Controllers
                 return View(viewModel);
             }
 
-            senderAccount.Balance -= viewModel.AmountToSend;
-
             var senderTransaction = new Transactions
             {
                 AccountId = viewModel.FromAccountId,
@@ -166,11 +164,11 @@ namespace WebApplication7.Controllers
                 Symbol = viewModel.MessageForSender,
                 AccountNavigation = senderAccount
             };
+            senderAccount.Balance -= viewModel.AmountToSend;
 
             if (receiverAccount != null)
             {
                 viewModel.Operation = "Credit in Cash";
-                receiverAccount.Balance += viewModel.AmountToSend;
 
                 var receiverTransaction = new Transactions
                 {
@@ -185,6 +183,8 @@ namespace WebApplication7.Controllers
                     Symbol = viewModel.MessageForReceiver,
                     AccountNavigation = receiverAccount
                 };
+                receiverAccount.Balance += viewModel.AmountToSend;
+
                 _appDataContext.Add(receiverTransaction);
             }
 
