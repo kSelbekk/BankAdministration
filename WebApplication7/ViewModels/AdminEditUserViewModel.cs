@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace WebApplication7.ViewModels
 {
@@ -13,5 +15,6 @@ namespace WebApplication7.ViewModels
         public string Email { get; set; }
 
         public string IsInRole { get; set; }
+        public List<SelectListItem> AllRoles { get; set; }
     }
 }

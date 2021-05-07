@@ -12,25 +12,29 @@ namespace WebApplication7.Controllers
     public class AdminController : BaseController
     {
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
-        public AdminController(BankAppDataContext appDataContext, IBankServices bankServices, UserManager<IdentityUser> userManager) : base(appDataContext, bankServices)
+        public AdminController(BankAppDataContext appDataContext, IBankServices bankServices, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
+            : base(appDataContext, bankServices)
         {
             _userManager = userManager;
+            _roleManager = roleManager;
         }
 
         // GET
         public IActionResult EditUser(string id)
         {
             var dbUser = _userManager.Users.FirstOrDefault(i => i.Id == id);
-
-            var viewModel = new AdminEditUserViewModel();
+            var r = _userManager.GetRolesAsync(dbUser).Result;
+            var viewModel = new AdminEditUserViewModel
+            {
+                UserName = dbUser.UserName,
+                Email = dbUser.Email,
+                Id = dbUser.Id,
+                IsInRole =
+            }
 
             return View();
-        }
-
-        public List<SelectListItem> GetAllUserRoles()
-        {
-            var roles = _userManager.
         }
     }
 }
