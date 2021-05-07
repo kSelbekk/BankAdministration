@@ -13,11 +13,8 @@ namespace WebApplication7.ViewModels
         public string Surname { get; set; }
         [MaxLength(256), Required]
         public string StreetAddress { get; set; }
-
-        
+        [Required]
         public string Gender { get; set; }
-        public SelectListItem SelectedGender { get; set; }
-
         [MaxLength(256), Required]
         public string City { get; set; }
         [MaxLength(50), Required]

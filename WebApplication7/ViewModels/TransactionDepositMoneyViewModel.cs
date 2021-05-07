@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace WebApplication7.ViewModels
 {
-    public class TransactionDepositMoenyViewModel
+    public class TransactionDepositMoneyViewModel
     {
         [Required]
         [Range(1, Double.MaxValue, ErrorMessage = "Input a valid account-id")]
