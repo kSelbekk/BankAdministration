@@ -22,6 +22,7 @@
                             <th>City</th>
                             <th>Address</th>
                             <th>Personal number</th>
+                            <th>Edit</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -33,6 +34,9 @@
                                 <td>@i.City</td>
                                 <td>@i.Address</td>
                                 <td>@i.PersonalNumber</td>
+                                <td>
+                                    <a class="btn btn-primary" asp-controller="Cashier" asp-action="EditCustomer" asp-route-id="@i.CustomerId">Edit</a>
+                                </td>
                             </tr>
                         }
                     </tbody>

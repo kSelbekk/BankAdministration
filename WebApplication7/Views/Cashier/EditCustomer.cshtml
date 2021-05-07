@@ -1,0 +1,110 @@
+﻿@model WebApplication7.ViewModels.CashierEditUserAccountsViewModel
+
+@{
+    ViewData["Title"] = "Edit Customer";
+}
+
+<div class="card">
+    <div class="card-header card-header-rose">
+        <h3>Edit Customer</h3>
+    </div>
+    <div class="card-body">
+        <form method="post" asp-action="EditCustomer">
+            <div class="row mt-4">
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="Givenname" class="bmd-label-floating">First Name</label>
+                        <input asp-for="Givenname" class="form-control">
+                        <span asp-validation-for="Givenname" class="field-validation-error"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="Surname" class="bmd-label-floating">Last Name</label>
+                        <input asp-for="Surname" class="form-control">
+                        <span asp-validation-for="Surname" class="field-validation-error"></span>
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-5">
+                    <div class="form-group">
+                        <label asp-for="EmailAddress" class="bmd-label-floating">Email</label>
+                        <input asp-for="EmailAddress" class="form-control">
+                        <span asp-validation-for="EmailAddress" class="field-validation-error"></span>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-5">
+                    <div class="form-group">
+                        <label asp-for="Gender" class="bmd-label-floating">Gender</label>
+                        <input asp-for="Gender" class="form-control">
+                        <span asp-validation-for="Gender" class="field-validation-error"></span>
+                    </div>
+                </div>
+
+                <div class="col-md-6 ">
+                    <div class="form-group">
+                        <label asp-for="CountryCode" class="bmd-label-floating">Country Code</label>
+                        <input asp-for="CountryCode" class="form-control">
+                        <span asp-validation-for="CountryCode" class="field-validation-error"></span>
+                    </div>
+                </div>
+                <div class="col-md-6 ">
+                    <div class="form-group">
+                        <label asp-for="Country" class="bmd-label-floating">Country</label>
+                        <input asp-for="Country" class="form-control">
+                        <span asp-validation-for="Country" class="field-validation-error"></span>
+                    </div>
+                </div>
+
+                <div class="col-md-3 ">
+                    <div class="form-group">
+                        <label asp-for="City" class="bmd-label-floating">City</label>
+                        <input asp-for="City" class="form-control">
+                        <span asp-validation-for="City" class="field-validation-error"></span>
+                    </div>
+                </div>
+                <div class="col-md-3 ">
+                    <div class="form-group">
+                        <label asp-for="StreetAddress" class="bmd-label-floating">Address</label>
+                        <input asp-for="StreetAddress" class="form-control">
+                        <span asp-validation-for="StreetAddress" class="field-validation-error"></span>
+                    </div>
+                </div>
+                <div class="col-md-3 ">
+                    <div class="form-group">
+                        <label asp-for="NationalId" class="bmd-label-floating">National Id</label>
+                        <input asp-for="NationalId" class="form-control">
+                        <span asp-validation-for="NationalId" class="field-validation-error"></span>
+                    </div>
+                </div>
+                <div class="col-md-3 ">
+                    <div class="form-group">
+                        <label asp-for="Zipcode" class="bmd-label-floating">Zipcode</label>
+                        <input asp-for="Zipcode" class="form-control">
+                        <span asp-validation-for="Zipcode" class="field-validation-error"></span>
+                    </div>
+                </div>
+
+                <div class="col-md-4 ">
+                    <div class="form-group">
+                        <label asp-for="TelephoneCountryCode" class="bmd-label-floating">Telephone Country Code</label>
+                        <input asp-for="TelephoneCountryCode" class="form-control">
+                        <span asp-validation-for="TelephoneCountryCode" class="field-validation-error"></span>
+                    </div>
+                </div>
+                <div class="col-md-8 ">
+                    <div class="form-group">
+                        <label asp-for="Telephonenumber" class="bmd-label-floating">Telephone Number</label>
+                        <input asp-for="Telephonenumber" class="form-control">
+                        <span asp-validation-for="Telephonenumber" class="field-validation-error"></span>
+                    </div>
+                </div>
+
+            </div>
+
+            <button type="submit" class="btn btn-primary pull-right">Save</button>
+            <div class="clearfix"></div>
+        </form>
+    </div>
+</div>
