@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using WebApplication7.Models;
@@ -7,12 +8,14 @@ using WebApplication7.ViewModels;
 
 namespace WebApplication7.Controllers
 {
+    //[Authorize(Roles = "Cashier")]
     public class CashierController :BaseController
     {
         public CashierController(BankAppDataContext appDataContext, IBankServices bankServices) 
             : base(appDataContext, bankServices)
         {
         }
+
 
         public IActionResult EditCustomer(int id)
         {

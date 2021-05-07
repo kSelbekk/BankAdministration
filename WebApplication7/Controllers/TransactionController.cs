@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Net;
+using System.Threading;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -31,19 +32,19 @@ namespace WebApplication7.Controllers
             _userManager = userManager;
         }
 
-        public IActionResult Index()
+        public IActionResult TransactionConfirmed()
         {
             return View();
         }
 
         public IActionResult DepositMoney()
         {
-            var viewModel = new TransactionDepositMoenyViewModel();
+            var viewModel = new TransactionDepositMoneyViewModel();
             return View(viewModel);
         }
 
         [HttpPost]
-        public IActionResult DepositMoney(TransactionDepositMoenyViewModel viewModel)
+        public IActionResult DepositMoney(TransactionDepositMoneyViewModel viewModel)
         {
             if (!ModelState.IsValid) return View(viewModel);
             var depositAccount = _bankServices.GetSpecificAccountFromDatabase(viewModel.ToAccountId);
@@ -73,7 +74,8 @@ namespace WebApplication7.Controllers
 
             _appDataContext.Add(depositTransaction);
             _appDataContext.SaveChanges();
-            return RedirectToAction("DepositMoney");
+
+            return RedirectToAction("TransactionConfirmed");
         }
 
         public IActionResult WithdrawalMoney()

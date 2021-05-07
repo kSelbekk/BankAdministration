@@ -39,7 +39,22 @@ namespace WebApplication7.Controllers
                 Telephonenumber = dbCustomer.Telephonenumber,
                 Zipcode = dbCustomer.Zipcode,
                 TotalBalance = dbCustomer.Dispositions.Select(a => a.Account.Balance).Sum(),
-                Dispositions = dbCustomer.Dispositions.ToList()
+
+                Dispositions = dbCustomer.Dispositions.Select(n=> new CustomerDispositionsViewModel
+                {
+                    CustomerId = n.CustomerId,
+                    AccountId = n.AccountId,
+                    DispositionId = n.DispositionId,
+                    Type = n.Type,
+                    Account = new CustomerAccountViewModel
+                    {
+                        AccountId = n.Account.AccountId,
+                        Balance = n.Account.Balance,
+                        Created = n.Account.Created,
+                        Frequency = n.Account.Frequency
+                    },
+                    
+                }).ToList()
             };
             return View(viewModel);
         }
@@ -105,21 +120,23 @@ namespace WebApplication7.Controllers
 
         public IActionResult GetTransactions(int id, int skip)
         {
-            var viewModel = new CustomerListTransactionsForCustomerViewModel.TransactionsFromViewModel();
+            var viewModel = new CustomerListTransactionsForCustomerViewModel.TransactionsFromViewModel
+            {
+                CustomerTransactions = _bankServices.GetAllTransactionsFromSpecificCustomer(id, skip, 15).Select(
+                    p => new CustomerListTransactionsForCustomerViewModel.CustomerTransaction
+                    {
+                        Balance = p.Balance,
+                        Type = p.Type,
+                        Account = p.Account,
+                        Amount = p.Amount,
+                        Bank = p.Bank,
+                        Operation = p.Operation,
+                        Symbol = p.Symbol,
+                        TransactionDate = p.Date,
+                        TransactionId = p.TransactionId
+                    }).ToList()
+            };
 
-            viewModel.CustomerTransactions = _bankServices.GetAllTransactionsFromSpecificCustomer(id, skip, 15).Select(
-                p => new CustomerListTransactionsForCustomerViewModel.CustomerTransaction
-                {
-                    Balance = p.Balance,
-                    Type = p.Type,
-                    Account = p.Account,
-                    Amount = p.Amount,
-                    Bank = p.Bank,
-                    Operation = p.Operation,
-                    Symbol = p.Symbol,
-                    TransactionDate = p.Date,
-                    TransactionId = p.TransactionId
-                }).ToList();
 
             return View(viewModel);
         }

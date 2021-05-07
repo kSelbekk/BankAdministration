@@ -21,6 +21,6 @@ namespace WebApplication7.ViewModels
         public string? Telephonenumber { get; set; }
         public string? Emailaddress { get; set; }
         public decimal TotalBalance { get; set; }
-        public List<Dispositions> Dispositions { get; set; }
+        public List<CustomerDispositionsViewModel> Dispositions { get; set; }
     }
 }
