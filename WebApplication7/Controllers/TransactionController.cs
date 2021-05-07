@@ -73,7 +73,7 @@ namespace WebApplication7.Controllers
 
             _appDataContext.Add(depositTransaction);
             _appDataContext.SaveChanges();
-            return View();
+            return RedirectToAction("DepositMoney");
         }
 
         public IActionResult WithdrawalMoney()

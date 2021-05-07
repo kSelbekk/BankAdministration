@@ -1,0 +1,43 @@
+﻿@model WebApplication7.ViewModels.AdminIndexListViewModel
+
+@{
+    ViewData["Title"] = "System users";
+}
+<div>
+    <div class="card">
+        <div class="card-header card-header-primary">
+            <h4 class="card-title">Users</h4>
+        </div>
+
+        <div class="card-body table-responsive">
+            <table class="table table-hover">
+                <thead class="text-warning">
+                    <tr>
+                        <th>Id</th>
+                        <th>Name</th>
+                        <th>Role</th>
+                        <th>Edit</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var user in Model.ListIndex)
+                    {
+                        <tr>
+                            <td>@user.Id</td>
+                            <td>@user.UserName</td>
+                            @foreach (var a in user.Role)
+                            {
+                                <td>@a</td>
+                            }
+                            <td>
+                                <a class="btn btn-primary" asp-action="EditUser" asp-route-id="@user.Id">Edit</a>
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>

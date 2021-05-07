@@ -14,7 +14,7 @@ namespace WebApplication7.ViewModels
         [MaxLength(256), EmailAddress]
         public string Email { get; set; }
 
-        public string IsInRole { get; set; }
-        public List<SelectListItem> AllRoles { get; set; }
+        public IList<string> Role { get; set; }
+
     }
 }

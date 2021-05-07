@@ -21,20 +21,33 @@ namespace WebApplication7.Controllers
             _roleManager = roleManager;
         }
 
-        // GET
+        public IActionResult Index()
+        {
+            var viewModel = new AdminIndexListViewModel
+            {
+                ListIndex = _userManager.Users.Select(p => new AdminIndexListViewModel.IndexViewModel
+                {
+                    UserName = p.UserName,
+                    Id = p.Id,
+                    Role = _userManager.GetRolesAsync(p).Result
+                }).ToList()
+            };
+
+            return View(viewModel);
+        }
         public IActionResult EditUser(string id)
         {
             var dbUser = _userManager.Users.FirstOrDefault(i => i.Id == id);
-            var r = _userManager.GetRolesAsync(dbUser).Result;
+            
             var viewModel = new AdminEditUserViewModel
             {
                 UserName = dbUser.UserName,
                 Email = dbUser.Email,
                 Id = dbUser.Id,
-                IsInRole =
-            }
+                Role = _userManager.GetRolesAsync(dbUser).Result
+            };
 
-            return View();
+            return View(viewModel);
         }
     }
 }
