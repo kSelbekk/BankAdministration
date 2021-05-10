@@ -21,7 +21,7 @@ namespace WebApplication7.Controllers
 
     //om du betalar till en annan i samma bank så kan du köra Withdrawal in cash på ditt konto.Och Credit in Cash på mottagaren
 
-    //[Authorize(Roles = "Cashier")]
+    [Authorize(Roles = "Cashier")]
     public class TransactionController : BaseController
     {
         private readonly SignInManager<IdentityUser> _userManager;
@@ -121,7 +121,7 @@ namespace WebApplication7.Controllers
             _appDataContext.Add(withdrawlTransaction);
             _appDataContext.SaveChanges();
 
-            return RedirectToAction("WithdrawalMoney");
+            return RedirectToAction("TransactionConfirmed");
         }
 
         public IActionResult SendMoney()
@@ -193,7 +193,7 @@ namespace WebApplication7.Controllers
             _appDataContext.Add(senderTransaction);
             _appDataContext.SaveChanges();
 
-            return RedirectToAction("SendMoney");
+            return RedirectToAction("TransactionConfirmed");
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿@model WebApplication7.ViewModels.AdminEditUserViewModel
+﻿@using Microsoft.EntityFrameworkCore.Metadata.Internal
+@model WebApplication7.ViewModels.AdminEditUserViewModel
 
 @{
     ViewData["Title"] = "Edit System User";
@@ -26,17 +27,10 @@
                         <span asp-validation-for="Email" class="field-validation-error"></span>
                     </div>
                 </div>
-                <div class="col-md-12">
-                    <div class="form-group">
-                        <label asp-for="Role" class="bmd-label-floating">Role</label>
-                        <input asp-for="Role" class="form-control">
-                        <span asp-validation-for="Role" class="field-validation-error"></span>
-                    </div>
-                </div>
             </div>
 
             <button type="submit" class="btn btn-primary pull-right">Save</button>
             <div class="clearfix"></div>
         </form>
-</div>
+    </div>
 </div>

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace WebApplication7.ViewModels
@@ -13,8 +14,5 @@ namespace WebApplication7.ViewModels
 
         [MaxLength(256), EmailAddress]
         public string Email { get; set; }
-
-        public IList<string> Role { get; set; }
-
     }
 }

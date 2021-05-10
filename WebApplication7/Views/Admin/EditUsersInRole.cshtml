@@ -1,0 +1,34 @@
+﻿@model List<WebApplication7.ViewModels.AdminEditUserRoleViewModel>
+
+@{
+    var roleId = ViewBag.roleId;
+    ViewData["Title"] = "Edit User in Role";
+}
+
+<form method="post">
+    <div class="card">
+        <div class="card-header">
+            <h1 class="text-primary">Add or Remove user from role</h1>
+        </div>
+        <div class="card-body">
+
+            @for (int i = 0; i < Model.Count; i++)
+            {
+                <div class="form-check m-1">
+                    <input type="hidden" asp-for="@Model[i].UserId" />
+                    <input type="hidden" asp-for="@Model[i].UserName" />
+
+                    <input asp-for="@Model[i].IsSelected" class="form-check-input" />
+
+                    <label class="form-check-label" asp-for="@Model[i].IsSelected">
+                        @Model[i].UserName
+                    </label>
+                </div>
+            }
+        </div>
+        <div class="card-footer">
+            <input class="btn btn-primary" type="submit" value="update" asp-route-roleId="@roleId" />
+            <a asp-action="Index" class="btn btn-primary">Cancel</a>
+        </div>
+    </div>
+</form>
