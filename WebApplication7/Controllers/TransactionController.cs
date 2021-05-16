@@ -97,7 +97,7 @@ namespace WebApplication7.Controllers
                 return View(viewModel);
             }
 
-            if (withdrawlAccount.Balance < viewModel.AmountToWithdrawal)
+            if (!_bankServices.CheckIfCustomerAccountBalanceIsValid(withdrawlAccount.AccountId, viewModel.AmountToWithdrawal))
             {
                 ModelState.AddModelError("AmountToWithdrawal", "You don't have enough money");
                 return View(viewModel);
@@ -147,7 +147,7 @@ namespace WebApplication7.Controllers
                 return View(viewModel);
             }
 
-            if (senderAccount.Balance < viewModel.AmountToSend)
+            if (!_bankServices.CheckIfCustomerAccountBalanceIsValid(senderAccount.AccountId, viewModel.AmountToSend))
             {
                 ModelState.AddModelError("AmountToSend", "You dont have ennough money");
                 return View(viewModel);

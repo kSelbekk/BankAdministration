@@ -40,7 +40,7 @@ namespace WebApplication7.Controllers
                 Zipcode = dbCustomer.Zipcode,
                 TotalBalance = dbCustomer.Dispositions.Select(a => a.Account.Balance).Sum(),
 
-                Dispositions = dbCustomer.Dispositions.Select(n=> new CustomerDispositionsViewModel
+                Dispositions = dbCustomer.Dispositions.Select(n => new CustomerDispositionsViewModel
                 {
                     CustomerId = n.CustomerId,
                     AccountId = n.AccountId,
@@ -53,7 +53,6 @@ namespace WebApplication7.Controllers
                         Created = n.Account.Created,
                         Frequency = n.Account.Frequency
                     },
-                    
                 }).ToList()
             };
             return View(viewModel);
@@ -137,7 +136,12 @@ namespace WebApplication7.Controllers
                     }).ToList()
             };
 
+            return View(viewModel);
+        }
 
+        public IActionResult CreatNewCustomer()
+        {
+            var viewModel = new CustomerCreatNewCustomerViewModel();
             return View(viewModel);
         }
     }

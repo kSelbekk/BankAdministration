@@ -27,6 +27,13 @@ namespace WebApplication7.Services
                 .FirstOrDefault(a => a.CustomerId == id);
         }
 
+        public bool CheckIfCustomerAccountBalanceIsValid(int accountId, decimal money)
+        {
+            var account = _bankAppDataContext.Accounts.First(i => i.AccountId == accountId);
+
+            return account.Balance >= money;
+        }
+
         public IQueryable<Customers> GetAllCustomersFromDatabase()
         {
             return _bankAppDataContext.Customers;
