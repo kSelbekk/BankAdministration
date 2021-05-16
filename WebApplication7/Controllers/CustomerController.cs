@@ -138,11 +138,5 @@ namespace WebApplication7.Controllers
 
             return View(viewModel);
         }
-
-        public IActionResult CreatNewCustomer()
-        {
-            var viewModel = new CustomerCreatNewCustomerViewModel();
-            return View(viewModel);
-        }
     }
 }

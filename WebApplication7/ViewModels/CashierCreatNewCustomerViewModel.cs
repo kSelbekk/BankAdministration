@@ -2,7 +2,7 @@
 
 namespace WebApplication7.ViewModels
 {
-    public class CustomerCreatNewCustomerViewModel
+    public class CashierCreatNewCustomerViewModel
     {
         public int CustomerId { get; set; }
         public string Gender { get; set; }

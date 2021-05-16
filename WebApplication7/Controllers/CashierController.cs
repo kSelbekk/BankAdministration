@@ -8,14 +8,13 @@ using WebApplication7.ViewModels;
 
 namespace WebApplication7.Controllers
 {
-    //[Authorize(Roles = "Cashier")]
-    public class CashierController :BaseController
+    [Authorize(Roles = "Cashier")]
+    public class CashierController : BaseController
     {
-        public CashierController(BankAppDataContext appDataContext, IBankServices bankServices) 
+        public CashierController(BankAppDataContext appDataContext, IBankServices bankServices)
             : base(appDataContext, bankServices)
         {
         }
-
 
         public IActionResult EditCustomer(int id)
         {
@@ -37,7 +36,7 @@ namespace WebApplication7.Controllers
                 Telephonenumber = dbCustomer.Telephonenumber,
                 Zipcode = dbCustomer.Zipcode
             };
-            
+
             return View(viewModel);
         }
 
@@ -62,8 +61,13 @@ namespace WebApplication7.Controllers
 
             _appDataContext.SaveChanges();
 
-            return RedirectToAction("CustomerProfile", "Customer", new {id = dbCustomer.CustomerId});
+            return RedirectToAction("CustomerProfile", "Customer", new { id = dbCustomer.CustomerId });
         }
 
+        public IActionResult CreatNewCustomer()
+        {
+            var viewModel = new CashierCreatNewCustomerViewModel();
+            return View(viewModel);
+        }
     }
 }

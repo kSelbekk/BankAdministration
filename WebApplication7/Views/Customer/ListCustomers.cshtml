@@ -1,4 +1,7 @@
-﻿@model WebApplication7.ViewModels.CustomerListCustomersViewModel
+﻿@using Microsoft.AspNetCore.Identity
+@model WebApplication7.ViewModels.CustomerListCustomersViewModel
+@inject SignInManager<IdentityUser> SignInManager
+
 @{
     ViewData["Title"] = "Customers";
 }
@@ -10,7 +13,10 @@
     <div class="card">
         <div class="card-header card-header-primary">
             <h4 class="card-title">Customers</h4>
-            <a class="btn btn-link" asp-action="CreatNewCustomer">Creat new customer</a>
+            @if (SignInManager.IsSignedIn(User) && User.IsInRole("Cashier"))
+            {
+                <a class="btn btn-link" asp-controller="Cashier" asp-action="CreatNewCustomer">Creat new customer</a>
+            }
         </div>
         @if (Model != null)
         {
@@ -23,7 +29,11 @@
                             <th>City</th>
                             <th>Address</th>
                             <th>Personal number</th>
-                            <th>Edit</th>
+                            @if (SignInManager.IsSignedIn(User) && User.IsInRole("Cashier"))
+                            {
+                                <th>Edit</th>
+
+                            }
                         </tr>
                     </thead>
                     <tbody>
@@ -35,9 +45,12 @@
                                 <td>@i.City</td>
                                 <td>@i.Address</td>
                                 <td>@i.PersonalNumber</td>
-                                <td>
-                                    <a class="btn btn-primary" asp-controller="Cashier" asp-action="EditCustomer" asp-route-id="@i.CustomerId">Edit</a>
-                                </td>
+                                @if (SignInManager.IsSignedIn(User) && User.IsInRole("Cashier"))
+                                {
+                                    <td>
+                                        <a class="btn btn-primary" asp-controller="Cashier" asp-action="EditCustomer" asp-route-id="@i.CustomerId">Edit</a>
+                                    </td>
+                                }
                             </tr>
                         }
                     </tbody>
