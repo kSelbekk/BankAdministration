@@ -84,18 +84,17 @@ namespace WebApplication7.Controllers
             return View(viewModel);
         }
 
+        public IActionResult ValidateExistingAccountId(int FromAccountId)
+        {
+            return _bankServices.GetSpecificAccountFromDatabase(FromAccountId) == null ? Json($"No account with {FromAccountId} Id found") : Json(true);
+        }
+
         [HttpPost]
         public IActionResult WithdrawalMoney(TransactionWithdrawalMoneyViewModel viewModel)
         {
             if (!ModelState.IsValid) return View(viewModel);
 
             var withdrawlAccount = _bankServices.GetSpecificAccountFromDatabase(viewModel.FromAccountId);
-
-            if (withdrawlAccount == null)
-            {
-                ModelState.AddModelError("FromAccountId", "No account found");
-                return View(viewModel);
-            }
 
             if (!_bankServices.CheckIfCustomerAccountBalanceIsValid(withdrawlAccount.AccountId, viewModel.AmountToWithdrawal))
             {

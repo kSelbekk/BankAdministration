@@ -1,0 +1,42 @@
+﻿@model WebApplication7.ViewModels.HomePageModel.HomeIndexViewModel
+
+@{
+    Layout = null;
+}
+
+<div class="col-xl-4 col-lg-12">
+    <div class="card card-stats">
+        <div class="card-header card-header-warning card-header-icon">
+            <div class="card-icon">
+                <i class="material-icons">content_copy</i>
+            </div>
+            <p class="card-category">Total accounts</p>
+            <h3 class="card-title text-primary">
+                @Model.TotalAccounts
+                <small></small>
+            </h3>
+        </div>
+    </div>
+</div>
+<div class="col-xl-4 col-lg-12">
+    <div class="card card-stats">
+        <div class="card-header card-header-success card-header-icon">
+            <div class="card-icon">
+                <i class="material-icons">savings</i>
+            </div>
+            <p class="card-category">Total balance</p>
+            <h3 class="card-title text-primary">@String.Format("{0:C}", Model.TotalBalance)</h3>
+        </div>
+    </div>
+</div>
+<div class="col-xl-4 col-lg-12">
+    <div class="card card-stats">
+        <div class="card-header card-header-danger card-header-icon">
+            <div class="card-icon">
+                <i class="material-icons">account_circle</i>
+            </div>
+            <p class="card-category">Total Customers</p>
+            <h3 class="card-title text-primary">@Model.TotalCustomers</h3>
+        </div>
+    </div>
+</div>

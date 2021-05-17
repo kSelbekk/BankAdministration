@@ -44,7 +44,5 @@ namespace WebApplication7.ViewModels
 
         [MaxLength(100), EmailAddress]
         public string? Emailaddress { get; set; }
-
-        public ICollection<CashierCreatNewDispositionsViewModel> ListDespositions { get; set; }
     }
 }

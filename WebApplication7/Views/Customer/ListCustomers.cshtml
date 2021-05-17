@@ -1,4 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Identity
+@using System.Security.Cryptography
 @model WebApplication7.ViewModels.CustomerListCustomersViewModel
 @inject SignInManager<IdentityUser> SignInManager
 
@@ -112,6 +113,10 @@
                     </nav>
                 </div>
             </div>
+        }
+        else
+        {
+            <h1>Loading</h1>
         }
     </div>
 </div>

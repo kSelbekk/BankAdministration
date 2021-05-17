@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using WebApplication7.Utilities;
 
@@ -8,6 +9,7 @@ namespace WebApplication7.ViewModels
 {
     public class TransactionSendMoneyViewModel
     {
+        [Remote("ValidateExistingAccountId", "Transaction")]
         [Range(1, double.MaxValue, ErrorMessage = "Input a valid account-id")]
         [Required]
         public int FromAccountId { get; set; }

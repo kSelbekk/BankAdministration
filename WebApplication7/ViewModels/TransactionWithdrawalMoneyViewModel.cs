@@ -1,13 +1,15 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
+using Microsoft.AspNetCore.Mvc;
 
 namespace WebApplication7.ViewModels
 {
     public class TransactionWithdrawalMoneyViewModel
     {
         [Required]
-        [Range(1, Double.MaxValue, ErrorMessage = "Input a valid account-id")]
+        [Remote("ValidateExistingAccountId", "Transaction")]
+        [Range(1, double.MaxValue, ErrorMessage = "Input a valid account-id")]
         public int FromAccountId { get; set; }
 
         //Symbol in database
