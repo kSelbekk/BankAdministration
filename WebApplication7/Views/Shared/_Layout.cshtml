@@ -33,9 +33,9 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
     <link href="~/css/material-dashboard.css" rel="stylesheet" />
 </head>
-<body class="dark-edition">
+<body class="">
     <div class="wrapper ">
-        <div class="sidebar" data-color="purple" data-background-color="black" data-image="~/img/sidebar-2.jpg">
+        <div class="sidebar" data-color="purple" data-background-color="white" data-image="~/img/sidebar-2.jpg">
             <div class="sidebar-wrapper">
                 <ul class="nav">
                     <partial name="_LoginPartial" />
@@ -47,15 +47,15 @@
                             <p>Admin</p>
                         </a>
 
-                        <ul class="dropdown-menu show-dropdown bg-dark">
+                        <ul class="dropdown-menu show-dropdown bg-light">
                             <li class="button-container m-2 p-1">
-                                <a asp-controller="Admin" asp-action="Index" class="btn btn-primary btn-block">
+                                <a asp-controller="Admin" asp-action="Index" class="btn btn-primary">
                                     <i class="material-icons">manage_accounts</i>
                                     <p>List System user</p>
                                 </a>
                             </li>
                             <li class="button-container m-2 p-1">
-                                <a asp-controller="Admin" class="btn btn-primary btn-block">
+                                <a asp-controller="Admin" class="btn btn-primary">
                                     <i class="material-icons">person_add</i>
                                     <p>Add user</p>
                                 </a>
@@ -86,9 +86,10 @@
                             <i class="material-icons">paid</i>
                             <p>Transactions</p>
                         </a>
+
                         @if (SignInManager.IsSignedIn(User) && User.IsInRole("Cashier"))
                         {
-                            <ul class="dropdown-menu show-dropdown bg-dark">
+                            <ul class="dropdown-menu show-dropdown bg-light">
                                 <li class="button-container m-2 p-1">
                                     <a class="btn btn-primary btn-block" asp-controller="Transaction" asp-action="SendMoney">
                                         <i class="material-icons">payments</i>

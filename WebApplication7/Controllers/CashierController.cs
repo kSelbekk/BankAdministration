@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -67,6 +69,55 @@ namespace WebApplication7.Controllers
         public IActionResult CreatNewCustomer()
         {
             var viewModel = new CashierCreatNewCustomerViewModel();
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public IActionResult CreatNewCustomer(CashierCreatNewCustomerViewModel viewModel)
+        {
+            if (!ModelState.IsValid) return View(viewModel);
+
+            var newCustomer = new Customers
+            {
+                Givenname = viewModel.Givenname,
+                Surname = viewModel.Surname,
+                Birthday = viewModel.Birthday,
+                City = viewModel.City,
+                Country = viewModel.Country,
+                CountryCode = viewModel.CountryCode,
+                Emailaddress = viewModel.Emailaddress,
+                Gender = viewModel.Gender,
+                NationalId = viewModel.NationalId,
+                Streetaddress = viewModel.Streetaddress,
+                Telephonecountrycode = viewModel.Telephonecountrycode,
+                Telephonenumber = viewModel.Telephonenumber,
+                Zipcode = viewModel.Zipcode,
+                Dispositions = new List<Dispositions>()
+            };
+
+            _appDataContext.Add(newCustomer);
+            _appDataContext.SaveChanges();
+
+            _appDataContext.Customers.Update(newCustomer);
+
+            var newAccount = new Accounts
+            {
+                Created = DateTime.Now,
+                Frequency = "Monthly"
+            };
+
+            _appDataContext.Accounts.Update(newAccount);
+
+            var newDisposition = new Dispositions
+            {
+                Account = newAccount,
+                Customer = newCustomer,
+                Type = "OWNER"
+            };
+            _appDataContext.Dispositions.Update(newDisposition);
+
+            _appDataContext.SaveChanges();
+
             return View(viewModel);
         }
     }

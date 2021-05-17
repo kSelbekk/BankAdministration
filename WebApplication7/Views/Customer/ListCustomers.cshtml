@@ -9,13 +9,13 @@
     <input asp-for="q" class="form-control text-center w-50" placeholder="Search customer..."
            aria-label="Search" />
 </form>
-<div class="">
+<div>
     <div class="card">
         <div class="card-header card-header-primary">
             <h4 class="card-title">Customers</h4>
             @if (SignInManager.IsSignedIn(User) && User.IsInRole("Cashier"))
             {
-                <a class="btn btn-link" asp-controller="Cashier" asp-action="CreatNewCustomer">Creat new customer</a>
+                <a class="card-category" asp-controller="Cashier" asp-action="CreatNewCustomer">Creat new customer</a>
             }
         </div>
         @if (Model != null)
