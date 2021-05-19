@@ -52,7 +52,17 @@ namespace WebApplication7.Controllers
                 TotalCustomers = totalCustomers
             };
 
-            var a = new List<HomePageModel.InformationPerCountry>();
+            viewModel.CountryInformation = new HomePageModel.InformationPerCountry
+            {
+                CustomersPerCountries = query
+                    .ToLookup(i=> i.Customer.Country)
+                    .Select(m=>new HomePageModel.InformationPerCountry.NumberOfCustomersPerCountry
+                {
+                    Country = m.Key,
+                    TotalBalance = m.Where(o=>o.Type=="OWNER").Select(a=>a.Account).Select(p=>p.Balance).Sum(),
+                    Accounts = m.Where(o => o.Type == "OWNER").Select(i => i.Account).Distinct().Count()
+                    }).ToList()
+            };
 
             return View(viewModel);
         }

@@ -16,7 +16,7 @@ namespace WebApplication7.Services
 
         public IQueryable<Dispositions> GetAllDispositionsFromDatabase()
         {
-            return _bankAppDataContext.Dispositions;
+            return _bankAppDataContext.Dispositions.Include(c=>c.Customer).Include(a=>a.Account);
         }
 
         public Customers GetSpecificCustomerInformation(int id)

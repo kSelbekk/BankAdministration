@@ -84,10 +84,6 @@ namespace WebApplication7.Controllers
             return View(viewModel);
         }
 
-        public IActionResult ValidateExistingAccountId(int FromAccountId)
-        {
-            return _bankServices.GetSpecificAccountFromDatabase(FromAccountId) == null ? Json($"No account with {FromAccountId} Id found") : Json(true);
-        }
 
         [HttpPost]
         public IActionResult WithdrawalMoney(TransactionWithdrawalMoneyViewModel viewModel)
@@ -148,7 +144,7 @@ namespace WebApplication7.Controllers
 
             if (!_bankServices.CheckIfCustomerAccountBalanceIsValid(senderAccount.AccountId, viewModel.AmountToSend))
             {
-                ModelState.AddModelError("AmountToSend", "You dont have ennough money");
+                ModelState.AddModelError("AmountToSend", "You don't have enough money");
                 return View(viewModel);
             }
 
@@ -193,6 +189,11 @@ namespace WebApplication7.Controllers
             _appDataContext.SaveChanges();
 
             return RedirectToAction("TransactionConfirmed");
+        }
+
+        public IActionResult ValidateExistingAccountId(int FromAccountId)
+        {
+            return _bankServices.GetSpecificAccountFromDatabase(FromAccountId) == null ? Json($"No account with {FromAccountId} Id found") : Json(true);
         }
     }
 }
