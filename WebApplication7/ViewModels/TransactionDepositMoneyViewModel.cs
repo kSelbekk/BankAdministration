@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc;
 
 namespace WebApplication7.ViewModels
 {
@@ -7,7 +8,8 @@ namespace WebApplication7.ViewModels
     {
         [Required]
         [Range(1, Double.MaxValue, ErrorMessage = "Input a valid account-id")]
-        public int ToAccountId { get; set; }
+        [Remote("ValidateExistingAccountId", "Transaction")]
+        public int AccountId { get; set; }
 
         //Symbol in database
         [MaxLength(50)]

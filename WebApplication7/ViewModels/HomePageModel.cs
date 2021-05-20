@@ -24,7 +24,6 @@ namespace WebApplication7.ViewModels
                 public int Accounts { get; set; }
                 public decimal TotalBalance { get; set; }
             }
-
         }
 
         public InformationPerCountry CountryInformation { get; set; }

@@ -47,19 +47,13 @@ namespace WebApplication7.Controllers
         public IActionResult DepositMoney(TransactionDepositMoneyViewModel viewModel)
         {
             if (!ModelState.IsValid) return View(viewModel);
-            var depositAccount = _bankServices.GetSpecificAccountFromDatabase(viewModel.ToAccountId);
-
-            if (depositAccount == null)
-            {
-                ModelState.AddModelError("FromAccountId", "No account found");
-                return View(viewModel);
-            }
+            var depositAccount = _bankServices.GetSpecificAccountFromDatabase(viewModel.AccountId);
 
             viewModel.Operation = viewModel.Bank == null ? "Credit" : "Collection from Another Bank";
 
             var depositTransaction = new Transactions
             {
-                AccountId = viewModel.ToAccountId,
+                AccountId = viewModel.AccountId,
                 Amount = viewModel.AmountToDeposit,
                 Bank = viewModel.Bank,
                 Balance = depositAccount.Balance + viewModel.AmountToDeposit,
@@ -84,13 +78,12 @@ namespace WebApplication7.Controllers
             return View(viewModel);
         }
 
-
         [HttpPost]
         public IActionResult WithdrawalMoney(TransactionWithdrawalMoneyViewModel viewModel)
         {
             if (!ModelState.IsValid) return View(viewModel);
 
-            var withdrawlAccount = _bankServices.GetSpecificAccountFromDatabase(viewModel.FromAccountId);
+            var withdrawlAccount = _bankServices.GetSpecificAccountFromDatabase(viewModel.AccountId);
 
             if (!_bankServices.CheckIfCustomerAccountBalanceIsValid(withdrawlAccount.AccountId, viewModel.AmountToWithdrawal))
             {
@@ -102,7 +95,7 @@ namespace WebApplication7.Controllers
 
             var withdrawlTransaction = new Transactions
             {
-                AccountId = viewModel.FromAccountId,
+                AccountId = viewModel.AccountId,
                 AccountNavigation = withdrawlAccount,
                 Amount = viewModel.AmountToWithdrawal,
                 Balance = withdrawlAccount.Balance - viewModel.AmountToWithdrawal * -1,
@@ -130,17 +123,11 @@ namespace WebApplication7.Controllers
         {
             if (!ModelState.IsValid) return View(viewModel);
 
-            var senderAccount = _bankServices.GetSpecificAccountFromDatabase(viewModel.FromAccountId);
+            var senderAccount = _bankServices.GetSpecificAccountFromDatabase(viewModel.AccountId);
 
             var receiverAccount = _bankServices.GetSpecificAccountFromDatabase(viewModel.ToAccountId);
 
             viewModel.Operation = receiverAccount == null ? "Remittance to Another Bank" : "Withdrawal in cash";
-
-            if (senderAccount == null)
-            {
-                ModelState.AddModelError("FromAccountId", "No account found");
-                return View(viewModel);
-            }
 
             if (!_bankServices.CheckIfCustomerAccountBalanceIsValid(senderAccount.AccountId, viewModel.AmountToSend))
             {
@@ -150,7 +137,7 @@ namespace WebApplication7.Controllers
 
             var senderTransaction = new Transactions
             {
-                AccountId = viewModel.FromAccountId,
+                AccountId = viewModel.AccountId,
                 Bank = viewModel.Bank,
                 Account = viewModel.ToAccountId.ToString(),
                 Balance = senderAccount.Balance - viewModel.AmountToSend,
@@ -174,7 +161,7 @@ namespace WebApplication7.Controllers
                     Balance = receiverAccount.Balance + viewModel.AmountToSend,
                     Type = "Credit",
                     Date = DateTime.Now,
-                    Account = viewModel.FromAccountId.ToString(),
+                    Account = viewModel.AccountId.ToString(),
                     Operation = viewModel.Operation,
                     Amount = viewModel.AmountToSend,
                     Symbol = viewModel.MessageForReceiver,
@@ -191,9 +178,9 @@ namespace WebApplication7.Controllers
             return RedirectToAction("TransactionConfirmed");
         }
 
-        public IActionResult ValidateExistingAccountId(int FromAccountId)
+        public IActionResult ValidateExistingAccountId(int AccountId)
         {
-            return _bankServices.GetSpecificAccountFromDatabase(FromAccountId) == null ? Json($"No account with {FromAccountId} Id found") : Json(true);
+            return _bankServices.GetSpecificAccountFromDatabase(AccountId) == null ? Json($"No account with {AccountId} Id found") : Json(true);
         }
     }
 }

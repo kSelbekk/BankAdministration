@@ -1,0 +1,34 @@
+﻿@model WebApplication7.ViewModels.HomePageModel.InformationPerCountry
+
+@{
+    Layout = null;
+}
+
+<div class="col-md-12">
+    <div class="card">
+        <div class="card-header card-header-primary">
+            <h4 class="card-title ">Country Information</h4>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead class=" text-primary">
+                    <th>Accounts</th>
+                    <th>Country</th>
+                    <th>Total Balance</th>
+                    </thead>
+                    <tbody>
+                        @foreach (var i in Model.CustomersPerCountries)
+                        {
+                            <tr>
+                                <td>@i.Accounts</td>
+                                <td><a>@i.Country</a></td>
+                                <td class="text-primary">@($"{i.TotalBalance:C}")</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

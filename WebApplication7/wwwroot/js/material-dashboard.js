@@ -253,7 +253,7 @@ md = {
                     }
                 }]
             ];
-            var websiteViewsChart = Chartist.Bar('#websiteViewsChart', dataWebsiteViewsChart, optionsWebsiteViewsChart, responsiveOptions);
+            var websiteViewsChart = Chartist.Line('#websiteViewsChart', dataWebsiteViewsChart, optionsWebsiteViewsChart, responsiveOptions);
 
             //start animation for the Emails Subscription Chart
             md.startAnimationForBarChart(websiteViewsChart);

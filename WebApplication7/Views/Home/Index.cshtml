@@ -6,12 +6,13 @@
 <div class="container-fluid">
 
     <div class="row">
-
         <partial name="_SumInforamtionIndex" model="@Model.IndexInformation" />
     </div>
 
-    <form class="form-outline" asp-controller="Customer" asp-action="CustomerProfile">
+    <form class="form-outline mb-3" asp-controller="Customer" asp-action="CustomerProfile">
         <input name="id" class="form-control text-center text-primary" placeholder="Search customer number..."
                aria-label="Search" />
     </form>
+
+    <partial name="_CountryInfoChart" model="@Model.CountryInformation" />
 </div>

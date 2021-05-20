@@ -10,7 +10,7 @@ namespace WebApplication7.ViewModels
         [Required]
         [Remote("ValidateExistingAccountId", "Transaction")]
         [Range(1, double.MaxValue, ErrorMessage = "Input a valid account-id")]
-        public int FromAccountId { get; set; }
+        public int AccountId { get; set; }
 
         //Symbol in database
         [MaxLength(50)]
