@@ -10,15 +10,12 @@ namespace WebApplication7.ViewModels
     public class TransactionSendMoneyViewModel
     {
         [Remote("ValidateExistingAccountId", "Transaction")]
-        [Range(1, double.MaxValue, ErrorMessage = "Input a valid account-id")]
         [Required]
         public int AccountId { get; set; }
 
-        [Range(1, double.MaxValue, ErrorMessage = "Input a valid account-id")]
         public int ToAccountId { get; set; }
 
         [Required]
-        [Range(1, double.PositiveInfinity, ErrorMessage = "Input a valid amount")]
         public decimal AmountToSend { get; set; }
 
         [MaxLength(50)]

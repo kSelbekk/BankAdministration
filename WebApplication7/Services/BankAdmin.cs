@@ -16,7 +16,9 @@ namespace WebApplication7.Services
 
         public IQueryable<Dispositions> GetAllDispositionsFromDatabase()
         {
-            return _bankAppDataContext.Dispositions.Include(c=>c.Customer).Include(a=>a.Account);
+            return _bankAppDataContext.Dispositions
+                .Include(c => c.Customer)
+                .Include(a => a.Account);
         }
 
         public Customers GetSpecificCustomerInformation(int id)
@@ -25,13 +27,6 @@ namespace WebApplication7.Services
                 .Include(a => a.Dispositions)
                 .ThenInclude(a => a.Account)
                 .FirstOrDefault(a => a.CustomerId == id);
-        }
-
-        public bool CheckIfCustomerAccountBalanceIsValid(int accountId, decimal money)
-        {
-            var account = _bankAppDataContext.Accounts.First(i => i.AccountId == accountId);
-
-            return account.Balance >= money;
         }
 
         public IQueryable<Customers> GetAllCustomersFromDatabase()
@@ -50,7 +45,15 @@ namespace WebApplication7.Services
 
         public Accounts GetSpecificAccountFromDatabase(int id)
         {
-            return _bankAppDataContext.Accounts.FirstOrDefault(i => i.AccountId.Equals(id));
+            return _bankAppDataContext.Accounts
+                .FirstOrDefault(i => i.AccountId.Equals(id));
+        }
+
+        public bool CheckIfCustomerAccountBalanceIsValid(int accountId, decimal money)
+        {
+            var account = _bankAppDataContext.Accounts.First(i => i.AccountId == accountId);
+
+            return account.Balance >= money;
         }
     }
 }

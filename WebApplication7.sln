@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30804.86
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApplication7", "WebApplication7\WebApplication7.csproj", "{B594F9F4-6894-43C9-945A-B4AD76BECD1C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApplication7", "WebApplication7\WebApplication7.csproj", "{B594F9F4-6894-43C9-945A-B4AD76BECD1C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankTransaction", "BankTransaction\BankTransaction.csproj", "{18A16C6D-F8D7-46BB-8C3D-CF6965C2B666}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{B594F9F4-6894-43C9-945A-B4AD76BECD1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B594F9F4-6894-43C9-945A-B4AD76BECD1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B594F9F4-6894-43C9-945A-B4AD76BECD1C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{18A16C6D-F8D7-46BB-8C3D-CF6965C2B666}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{18A16C6D-F8D7-46BB-8C3D-CF6965C2B666}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{18A16C6D-F8D7-46BB-8C3D-CF6965C2B666}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{18A16C6D-F8D7-46BB-8C3D-CF6965C2B666}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -16,12 +16,9 @@ namespace WebApplication7.Controllers
     [Authorize(Roles = "Cashier")]
     public class TransactionController : BaseController
     {
-        private readonly SignInManager<IdentityUser> _userManager;
-
-        public TransactionController(BankAppDataContext appDataContext, IBankServices bankServices, SignInManager<IdentityUser> userManager)
+        public TransactionController(BankAppDataContext appDataContext, IBankServices bankServices)
             : base(appDataContext, bankServices)
         {
-            _userManager = userManager;
         }
 
         public IActionResult TransactionConfirmed()
@@ -83,7 +80,7 @@ namespace WebApplication7.Controllers
                 return View(viewModel);
             }
 
-            viewModel.Operation = _userManager.IsSignedIn(User) ? "Credit Card Withdrawal" : "Withdrawal in Cash";
+            viewModel.Operation = "Withdrawal in Cash";
 
             var withdrawlTransaction = new Transactions
             {
@@ -115,13 +112,13 @@ namespace WebApplication7.Controllers
         {
             if (!ModelState.IsValid) return View(viewModel);
 
-            var senderAccount = _bankServices.GetSpecificAccountFromDatabase(viewModel.AccountId);
+            //var senderAccount = _bankServices.GetSpecificAccountFromDatabase(viewModel.AccountId);
 
             var receiverAccount = _bankServices.GetSpecificAccountFromDatabase(viewModel.ToAccountId);
 
             viewModel.Operation = receiverAccount == null ? "Remittance to Another Bank" : "Withdrawal in cash";
 
-            if (!_bankServices.CheckIfCustomerAccountBalanceIsValid(senderAccount.AccountId, viewModel.AmountToSend))
+            if (!_bankServices.CheckIfCustomerAccountBalanceIsValid(viewModel.AccountId, viewModel.AmountToSend))
             {
                 ModelState.AddModelError("AmountToSend", "You don't have enough money");
                 return View(viewModel);
@@ -132,15 +129,15 @@ namespace WebApplication7.Controllers
                 AccountId = viewModel.AccountId,
                 Bank = viewModel.Bank,
                 Account = viewModel.ToAccountId.ToString(),
-                Balance = senderAccount.Balance - viewModel.AmountToSend,
+                Balance = _bankServices.GetSpecificAccountFromDatabase(viewModel.AccountId).Balance - viewModel.AmountToSend,
                 Amount = viewModel.AmountToSend * -1,
                 Type = "Debit",
                 Date = DateTime.Now,
                 Operation = viewModel.Operation,
                 Symbol = viewModel.MessageForSender,
-                AccountNavigation = senderAccount
+                AccountNavigation = _bankServices.GetSpecificAccountFromDatabase(viewModel.AccountId)
             };
-            senderAccount.Balance -= viewModel.AmountToSend;
+            _bankServices.GetSpecificAccountFromDatabase(viewModel.AccountId).Balance -= viewModel.AmountToSend;
 
             if (receiverAccount != null)
             {
