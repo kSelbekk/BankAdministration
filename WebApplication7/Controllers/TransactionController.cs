@@ -13,14 +13,6 @@ using WebApplication7.ViewModels;
 
 namespace WebApplication7.Controllers
 {
-    //Credit                              Okänd insättning...
-    //Credit in Cash                      insättning cash
-    //Credit Card Withdrawal              uttag bankomat
-    //Remittance to Another Bank          du överför pengar till en annan bank
-    //Withdrawal in Cash                  uttag på banken liksom = cash
-
-    //om du betalar till en annan i samma bank så kan du köra Withdrawal in cash på ditt konto.Och Credit in Cash på mottagaren
-
     [Authorize(Roles = "Cashier")]
     public class TransactionController : BaseController
     {
