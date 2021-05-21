@@ -110,6 +110,12 @@ namespace WebApplication7.Controllers
         [HttpPost]
         public IActionResult SendMoney(TransactionSendMoneyViewModel viewModel)
         {
+            if (!_bankServices.CheckIfCustomerAccountBalanceIsValid(viewModel.AccountId, viewModel.AmountToSend))
+            {
+                ModelState.AddModelError("AmountToSend", "You don't have enough money");
+                return View(viewModel);
+            }
+
             if (!ModelState.IsValid) return View(viewModel);
 
             //var senderAccount = _bankServices.GetSpecificAccountFromDatabase(viewModel.AccountId);
@@ -117,12 +123,6 @@ namespace WebApplication7.Controllers
             var receiverAccount = _bankServices.GetSpecificAccountFromDatabase(viewModel.ToAccountId);
 
             viewModel.Operation = receiverAccount == null ? "Remittance to Another Bank" : "Withdrawal in cash";
-
-            if (!_bankServices.CheckIfCustomerAccountBalanceIsValid(viewModel.AccountId, viewModel.AmountToSend))
-            {
-                ModelState.AddModelError("AmountToSend", "You don't have enough money");
-                return View(viewModel);
-            }
 
             var senderTransaction = new Transactions
             {
@@ -137,6 +137,7 @@ namespace WebApplication7.Controllers
                 Symbol = viewModel.MessageForSender,
                 AccountNavigation = _bankServices.GetSpecificAccountFromDatabase(viewModel.AccountId)
             };
+
             _bankServices.GetSpecificAccountFromDatabase(viewModel.AccountId).Balance -= viewModel.AmountToSend;
 
             if (receiverAccount != null)
@@ -170,6 +171,11 @@ namespace WebApplication7.Controllers
         public IActionResult ValidateExistingAccountId(int AccountId)
         {
             return _bankServices.GetSpecificAccountFromDatabase(AccountId) == null ? Json($"No account with {AccountId} Id found") : Json(true);
+        }
+
+        public IActionResult ValidateNoNegativeNumber(decimal AmountToSend)
+        {
+            return AmountToSend > 0 ? Json(true) : Json("The amount can't be a negative number");
         }
     }
 }

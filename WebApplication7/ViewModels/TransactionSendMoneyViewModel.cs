@@ -16,6 +16,8 @@ namespace WebApplication7.ViewModels
         public int ToAccountId { get; set; }
 
         [Required]
+        [DataType(DataType.Currency)]
+        [Remote("ValidateNoNegativeNumber", "Transaction")]
         public decimal AmountToSend { get; set; }
 
         [MaxLength(50)]

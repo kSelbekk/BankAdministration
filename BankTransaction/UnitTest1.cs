@@ -6,6 +6,7 @@ using WebApplication7.Services;
 using System.Runtime.InteropServices.ComTypes;
 
 using AutoFixture;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApplication7.Models;
 using WebApplication7.ViewModels;
@@ -38,7 +39,7 @@ namespace BankTransaction
         }
 
         [TestMethod]
-        public void Cant_complete_transaction_if_balance_is_less_then_amount_to_send()
+        public void Cant_complete_transactionSendMoney_if_balance_is_less_then_amount_to_send()
         {
             var viewModel = fixture.Create<TransactionSendMoneyViewModel>();
 
@@ -46,6 +47,26 @@ namespace BankTransaction
 
             _bankMockServices.Setup(e =>
                 e.CheckIfCustomerAccountBalanceIsValid(viewModel.AccountId, viewModel.AmountToSend)).Returns(true);
+        }
+
+        [TestMethod]
+        public void Cant_complete_transactionWithdrawl_if_balance_is_less_then_amount_to_send()
+        {
+            var viewModel = fixture.Create<TransactionWithdrawalMoneyViewModel>();
+
+            viewModel.AmountToWithdrawal = 1337;
+
+            _bankMockServices.Setup(e =>
+                e.CheckIfCustomerAccountBalanceIsValid(viewModel.AccountId, viewModel.AmountToWithdrawal)).Returns(true);
+        }
+
+        [TestMethod]
+        public void Not_supposed_to_use_negative_numbers_for_transactions()
+        {
+            var response = _sut.ValidateNoNegativeNumber(-50);
+
+            var result = (JsonResult)response;
+            Assert.AreNotEqual(true, result.Value);
         }
     }
 }

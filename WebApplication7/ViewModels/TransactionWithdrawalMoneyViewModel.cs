@@ -9,7 +9,6 @@ namespace WebApplication7.ViewModels
     {
         [Required]
         [Remote("ValidateExistingAccountId", "Transaction")]
-        [Range(1, double.MaxValue, ErrorMessage = "Input a valid account-id")]
         public int AccountId { get; set; }
 
         //Symbol in database
@@ -18,7 +17,7 @@ namespace WebApplication7.ViewModels
 
         [Required]
         [DataType(DataType.Currency)]
-        [Range(1, Double.MaxValue, ErrorMessage = "Input a valid amount")]
+        [Remote("ValidateNoNegativeNumber", "Transaction")]
         public decimal AmountToWithdrawal { get; set; }
 
         public string Operation { get; set; }
