@@ -21,5 +21,7 @@ namespace WebApplication7.ViewModels
 
         [MaxLength(2)]
         public string Bank { get; set; }
+
+        public string Operation { get; set; }
     }
 }

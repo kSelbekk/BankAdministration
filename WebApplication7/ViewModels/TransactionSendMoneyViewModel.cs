@@ -28,8 +28,6 @@ namespace WebApplication7.ViewModels
 
         public string Operation { get; set; }
 
-        public string Type { get; set; }
-
         [StringLength(2)]
         public string? Bank { get; set; }
     }

@@ -41,24 +41,6 @@ namespace WebApplication7.Controllers
 
             _bankServices.DepositTransaction(viewModel.AccountId, "", viewModel.AmountToSend, operation, viewModel.Bank, viewModel.MessageForReceiver);
 
-            //var depositTransaction = new Transactions
-            //{
-            //    AccountId = depositAccount.AccountId,
-            //    Amount = viewModel.AmountToDeposit,
-            //    Bank = viewModel.Bank,
-            //    Balance = depositAccount.Balance + viewModel.AmountToDeposit,
-            //    Date = DateTime.Now,
-            //    Operation = viewModel.Operation,
-            //    Type = "Credit",
-            //    AccountNavigation = depositAccount,
-            //    Symbol = viewModel.MessageForReceiver
-            //};
-
-            //depositAccount.Balance += viewModel.AmountToDeposit;
-
-            //_appDataContext.Add(depositTransaction);
-            //_appDataContext.SaveChanges();
-
             return RedirectToAction("TransactionConfirmed");
         }
 
@@ -71,30 +53,17 @@ namespace WebApplication7.Controllers
         [HttpPost]
         public IActionResult WithdrawalMoney(TransactionWithdrawalMoneyViewModel viewModel)
         {
+            if (!ModelState.IsValid) return View(viewModel);
+
             if (!_bankServices.CheckIfCustomerAccountBalanceIsValid(viewModel.AccountId, viewModel.AmountToSend))
             {
                 ModelState.AddModelError("AmountToSend", "You don't have enough money");
                 return View(viewModel);
             }
-            if (!ModelState.IsValid) return View(viewModel);
 
             var operation = "Withdrawal in Cash";
 
-            _bankServices.WithdraTransaction(viewModel.AccountId, "", viewModel.AmountToSend, viewModel.MessageForSender, operation, "");
-
-            //var withdrawlTransaction = new Transactions
-            //{
-            //    AccountId = viewModel.AccountId,
-            //    AccountNavigation = withdrawlAccount,
-            //    Amount = viewModel.AmountToSend,
-            //    Balance = withdrawlAccount.Balance - viewModel.AmountToSend * -1,
-            //    Date = DateTime.Now,
-            //    Operation = viewModel.Operation,
-            //    Type = "Debit",
-            //    Symbol = viewModel.MessageForSender,
-            //    Account = ""
-            //};
-            //withdrawlAccount.Balance -= viewModel.AmountToSend;
+            _bankServices.WithdralTransaction(viewModel.AccountId, "", viewModel.AmountToSend, viewModel.MessageForSender, operation, "");
 
             return RedirectToAction("TransactionConfirmed");
         }
@@ -108,44 +77,25 @@ namespace WebApplication7.Controllers
         [HttpPost]
         public IActionResult SendMoney(TransactionSendMoneyViewModel viewModel)
         {
+            if (!ModelState.IsValid) return View(viewModel);
+
             if (!_bankServices.CheckIfCustomerAccountBalanceIsValid(viewModel.AccountId, viewModel.AmountToSend))
             {
                 ModelState.AddModelError("AmountToSend", "You don't have enough money");
                 return View(viewModel);
             }
 
-            if (!ModelState.IsValid) return View(viewModel);
-
-            var senderAccount = _appDataContext.Accounts.First(i => i.AccountId == viewModel.AccountId);
-
-            var receiverAccount = _appDataContext.Accounts.First(i => i.AccountId == viewModel.ToAccountId);
+            var receiverAccount = _appDataContext.Accounts.FirstOrDefault(i => i.AccountId == viewModel.ToAccountId);
 
             var operation = receiverAccount == null ? "Remittance to Another Bank" : "Withdrawal in cash";
 
-            _bankServices.WithdraTransaction(viewModel.AccountId, viewModel.ToAccountId.ToString(), viewModel.AmountToSend, viewModel.MessageForSender, operation, viewModel.Bank);
+            _bankServices.WithdralTransaction(viewModel.AccountId, viewModel.ToAccountId.ToString(), viewModel.AmountToSend, viewModel.MessageForSender, operation, viewModel.Bank);
 
             if (receiverAccount != null)
             {
                 operation = "Credit in Cash";
 
                 _bankServices.DepositTransaction(viewModel.ToAccountId, viewModel.AccountId.ToString(), viewModel.AmountToSend, operation, viewModel.Bank, viewModel.MessageForReceiver);
-
-                //var receiverTransaction = new Transactions
-                //{
-                //    AccountId = viewModel.ToAccountId,
-                //    Bank = null,
-                //    Balance = receiverAccount.Balance + viewModel.AmountToSend,
-                //    Type = "Credit",
-                //    Date = DateTime.Now,
-                //    Account = viewModel.AccountId.ToString(),
-                //    Operation = viewModel.Operation,
-                //    Amount = viewModel.AmountToSend,
-                //    Symbol = viewModel.MessageForReceiver,
-                //    AccountNavigation = receiverAccount
-                //};
-                //receiverAccount.Balance += viewModel.AmountToSend;
-
-                //_appDataContext.Add(receiverTransaction);
             }
 
             return RedirectToAction("TransactionConfirmed");
@@ -159,7 +109,12 @@ namespace WebApplication7.Controllers
 
         public IActionResult ValidateNoNegativeNumber(decimal AmountToSend)
         {
-            return AmountToSend > 0 ? Json(true) : Json("The amount can't be a negative number");
+            if (AmountToSend > 0)
+            {
+                return Json(true);
+            }
+
+            return Json("No negative number");
         }
     }
 }

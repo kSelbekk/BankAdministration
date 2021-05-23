@@ -62,7 +62,7 @@ namespace WebApplication7.Services
             return true;
         }
 
-        public void WithdraTransaction(int accountId, string toAccountId, decimal amount, string message, string operation, string bank)
+        public void WithdralTransaction(int accountId, string toAccountId, decimal amount, string message, string operation, string bank)
         {
             var newTransaction = new Transactions
             {

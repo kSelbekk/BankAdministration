@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.IO;
 using System.Linq;
 using System.Net.Http.Headers;
 using System.Reflection.Metadata;
@@ -48,7 +50,7 @@ namespace BankTransaction
 
             var acc = fixture.Create<Accounts>();
             acc.AccountId = 1;
-            acc.Balance = 1000;
+            acc.Balance = 100;
 
             var account1 = fixture.Create<Accounts>();
             account1.AccountId = 2;
@@ -67,40 +69,45 @@ namespace BankTransaction
         public void Dont_complete_transactionSendMoney_if_balance_is_less_then_amount_to_send()
         {
             var viewModel = fixture.Create<TransactionSendMoneyViewModel>();
-            viewModel.AccountId = 1;
-            viewModel.ToAccountId = 2;
-            viewModel.AmountToSend = 50;
+
+            viewModel.Operation = "Remittance to Another Bank";
 
             _bankMockServices.Setup(e =>
                 e.CheckIfCustomerAccountBalanceIsValid(viewModel.AccountId, viewModel.AmountToSend)).Returns(true);
             _sut.SendMoney(viewModel);
+
+            _bankMockServices
+                .Verify(e => e.WithdralTransaction(viewModel.AccountId, viewModel.ToAccountId.ToString(),
+                    viewModel.AmountToSend, viewModel.MessageForSender, viewModel.Operation, viewModel.Bank), Times.Once);
+            _bankMockServices
+                .Verify(e => e.WithdralTransaction(viewModel.ToAccountId, viewModel.AccountId.ToString(),
+                    viewModel.AmountToSend, viewModel.MessageForSender, viewModel.Operation, viewModel.Bank), Times.Never);
         }
 
         [TestMethod]
-        public void Cant_complete_transactionWithdrawl_if_balance_is_less_then_amount_to_send()
+        public void Dont_complete_transactionWithdrawl_if_balance_is_less_then_amount_to_send()
         {
             var viewModel = fixture.Create<TransactionWithdrawalMoneyViewModel>();
             viewModel.AmountToSend = 69;
+            viewModel.AccountId = 1;
+            viewModel.Operation = "Withdrawal in Cash";
 
             _bankMockServices.Setup(e =>
                 e.CheckIfCustomerAccountBalanceIsValid(viewModel.AccountId, viewModel.AmountToSend)).Returns(true);
             _sut.WithdrawalMoney(viewModel);
-        }
 
-        [TestMethod]
-        public void Cant_complete_transactionDeposit_if_balance_is_less_then_amount_to_send()
-        {
-            var viewModel = fixture.Create<TransactionDepositMoneyViewModel>();
-            viewModel.AmountToSend = 69;
-
-            _bankMockServices.Setup(e =>
-                e.CheckIfCustomerAccountBalanceIsValid(viewModel.AccountId, viewModel.AmountToSend)).Returns(true);
-            _sut.DepositMoney(viewModel);
+            _bankMockServices
+                .Verify(e => e.WithdralTransaction(viewModel.AccountId, "",
+                    viewModel.AmountToSend, viewModel.MessageForSender, viewModel.Operation, ""), Times.Once);
         }
 
         [TestMethod]
         public void Not_supposed_to_use_negative_numbers_for_transactions()
         {
+            var response = _sut.ValidateNoNegativeNumber(-50);
+
+            var result = (JsonResult)response;
+            Assert.AreNotEqual(true, result.Value);
         }
     }
 }
