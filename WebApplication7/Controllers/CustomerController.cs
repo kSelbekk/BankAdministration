@@ -20,7 +20,10 @@ namespace WebApplication7.Controllers
         public IActionResult CustomerProfile(int id)
         {
             var dbCustomer = _bankServices.GetSpecificCustomerInformation(id);
-            if (dbCustomer == null) return RedirectToAction("Index", "Home");
+            if (dbCustomer == null)
+            {
+                ModelState.AddModelError("Id", "No account found");
+            }
 
             var viewModel = new CustomerCustomerProfileViewModel
             {

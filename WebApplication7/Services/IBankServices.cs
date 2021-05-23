@@ -17,5 +17,7 @@ namespace WebApplication7.Services
         public Customers GetSpecificCustomerInformation(int id);
 
         public bool CheckIfCustomerAccountBalanceIsValid(int customerId, decimal money);
+
+        public void WithdraTransaction(int accountId, string toAccountId, decimal amount, string message, string operation, string bank);
     }
 }

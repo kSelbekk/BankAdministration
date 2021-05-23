@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using WebApplication7.Models;
@@ -53,7 +54,33 @@ namespace WebApplication7.Services
         {
             var account = _bankAppDataContext.Accounts.First(i => i.AccountId == accountId);
 
-            return account.Balance >= money;
+            if (account.Balance < money)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public void WithdraTransaction(int accountId, string toAccountId, decimal amount, string message, string operation, string bank)
+        {
+            var newTransaction = new Transactions
+            {
+                AccountId = accountId,
+                Balance = _bankAppDataContext.Accounts.First(i => i.AccountId == accountId).Balance - amount,
+                Account = toAccountId,
+                Bank = bank,
+                Amount = amount * -1,
+                Type = "Debit",
+                Date = DateTime.Now,
+                Operation = operation,
+                Symbol = message,
+                AccountNavigation = _bankAppDataContext.Accounts.First(i => i.AccountId == accountId)
+            };
+            _bankAppDataContext.Accounts.First(i => i.AccountId == accountId).Balance -= amount;
+
+            _bankAppDataContext.Add(newTransaction);
+            _bankAppDataContext.SaveChanges();
         }
     }
 }

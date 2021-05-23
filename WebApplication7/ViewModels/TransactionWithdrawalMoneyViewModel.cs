@@ -18,7 +18,7 @@ namespace WebApplication7.ViewModels
         [Required]
         [DataType(DataType.Currency)]
         [Remote("ValidateNoNegativeNumber", "Transaction")]
-        public decimal AmountToWithdrawal { get; set; }
+        public decimal AmountToSend { get; set; }
 
         public string Operation { get; set; }
     }

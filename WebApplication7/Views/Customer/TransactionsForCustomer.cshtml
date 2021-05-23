@@ -46,7 +46,7 @@
         function fetch15more(id) {
             skip = skip + 15;
             $.ajax({
-                url: "/Customer/GetTransactions?id=" + id + "&skip=" + skip,
+                url: "/Customer/GetTransactions?AccountId=" + id + "&skip=" + skip,
                 success: function (result) {
                     $("#transactions").append(result);
                 }

@@ -10,8 +10,9 @@
     </div>
 
     <form class="form-outline mb-3" asp-controller="Customer" asp-action="CustomerProfile">
-        <input name="id" class="form-control text-center text-primary" placeholder="Search customer number..."
-               aria-label="Search" />
+        <label asp-for="Id" class="bmd-label-floating">Search for customer number</label>
+        <input asp-for="Id" class="form-control">
+        <span asp-validation-for="Id" class="field-validation-error"></span>
     </form>
 
     <partial name="_CountryInfoChart" model="@Model.CountryInformation" />

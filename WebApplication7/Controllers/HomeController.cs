@@ -24,7 +24,7 @@ namespace WebApplication7.Controllers
             _logger = logger;
         }
 
-        [ResponseCache(Duration = 30, Location = ResponseCacheLocation.Any, NoStore = false)]
+        [ResponseCache(Duration = 30, Location = ResponseCacheLocation.Any)]
         public IActionResult Index()
         {
             var viewModel = new HomePageModel();
@@ -55,12 +55,12 @@ namespace WebApplication7.Controllers
             viewModel.CountryInformation = new HomePageModel.InformationPerCountry
             {
                 CustomersPerCountries = query
-                    .ToLookup(i=> i.Customer.Country)
-                    .Select(m=>new HomePageModel.InformationPerCountry.NumberOfCustomersPerCountry
-                {
-                    Country = m.Key,
-                    TotalBalance = m.Where(o=>o.Type=="OWNER").Select(a=>a.Account).Select(p=>p.Balance).Sum(),
-                    Accounts = m.Where(o => o.Type == "OWNER").Select(i => i.Account).Distinct().Count()
+                    .ToLookup(i => i.Customer.Country)
+                    .Select(m => new HomePageModel.InformationPerCountry.NumberOfCustomersPerCountry
+                    {
+                        Country = m.Key,
+                        TotalBalance = m.Where(o => o.Type == "OWNER").Select(a => a.Account).Select(p => p.Balance).Sum(),
+                        Accounts = m.Where(o => o.Type == "OWNER").Select(i => i.Account).Distinct().Count()
                     }).ToList()
             };
 
