@@ -19,5 +19,7 @@ namespace WebApplication7.Services
         public bool CheckIfCustomerAccountBalanceIsValid(int customerId, decimal money);
 
         public void WithdraTransaction(int accountId, string toAccountId, decimal amount, string message, string operation, string bank);
+
+        public void DepositTransaction(int accountId, string fromAccountId, decimal amount, string operation, string bank, string messageForReceiver);
     }
 }

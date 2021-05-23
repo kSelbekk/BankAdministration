@@ -97,7 +97,7 @@ namespace WebApplication7.Controllers
 
         public IActionResult TransactionsForCustomer(int id)
         {
-            var query = _bankServices.GetAllTransactionsFromSpecificCustomer(id, 0, 15);
+            var query = _bankServices.GetAllTransactionsFromSpecificCustomer(id, 0, 20);
 
             var viewModel = new CustomerListTransactionsForCustomerViewModel
             {
@@ -124,7 +124,8 @@ namespace WebApplication7.Controllers
         {
             var viewModel = new CustomerListTransactionsForCustomerViewModel.TransactionsFromViewModel
             {
-                CustomerTransactions = _bankServices.GetAllTransactionsFromSpecificCustomer(id, skip, 15).Select(
+                CustomerTransactions = _bankServices.GetAllTransactionsFromSpecificCustomer(id, skip, 20)
+                    .Select(
                     p => new CustomerListTransactionsForCustomerViewModel.CustomerTransaction
                     {
                         Balance = p.Balance,

@@ -1,7 +1,7 @@
 ﻿@model WebApplication7.ViewModels.TransactionDepositMoneyViewModel
 
 @{
-    ViewData["Title"] = "Withdrawal";
+    ViewData["Title"] = "Deposit";
 }
 
 <div class="card">
@@ -22,9 +22,9 @@
             <div class="row">
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label asp-for="AmountToDeposit" class="bmd-label-floating">Amount</label>
-                        <input asp-for="AmountToDeposit" class="form-control">
-                        <span asp-validation-for="AmountToDeposit" class="field-validation-error"></span>
+                        <label asp-for="AmountToSend" class="bmd-label-floating">Amount</label>
+                        <input asp-for="AmountToSend" class="form-control">
+                        <span asp-validation-for="AmountToSend" class="field-validation-error"></span>
                     </div>
                 </div>
             </div>
@@ -46,7 +46,7 @@
                     </div>
                 </div>
             </div>
-            <button type="submit" class="btn btn-primary pull-right" asp-action="TransactionConfirmed">Deposit</button>
+            <button type="submit" class="btn btn-primary pull-right">Deposit</button>
             <div class="clearfix"></div>
         </form>
     </div>

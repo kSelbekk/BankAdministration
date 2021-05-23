@@ -84,6 +84,18 @@ namespace BankTransaction
 
             _bankMockServices.Setup(e =>
                 e.CheckIfCustomerAccountBalanceIsValid(viewModel.AccountId, viewModel.AmountToSend)).Returns(true);
+            _sut.WithdrawalMoney(viewModel);
+        }
+
+        [TestMethod]
+        public void Cant_complete_transactionDeposit_if_balance_is_less_then_amount_to_send()
+        {
+            var viewModel = fixture.Create<TransactionDepositMoneyViewModel>();
+            viewModel.AmountToSend = 69;
+
+            _bankMockServices.Setup(e =>
+                e.CheckIfCustomerAccountBalanceIsValid(viewModel.AccountId, viewModel.AmountToSend)).Returns(true);
+            _sut.DepositMoney(viewModel);
         }
 
         [TestMethod]

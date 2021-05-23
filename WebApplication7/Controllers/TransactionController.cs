@@ -36,27 +36,28 @@ namespace WebApplication7.Controllers
         public IActionResult DepositMoney(TransactionDepositMoneyViewModel viewModel)
         {
             if (!ModelState.IsValid) return View(viewModel);
-            var depositAccount = _bankServices.GetSpecificAccountFromDatabase(viewModel.AccountId);
 
-            viewModel.Operation = viewModel.Bank == null ? "Credit" : "Collection from Another Bank";
+            var operation = viewModel.Bank == null ? "Credit" : "Collection from Another Bank";
 
-            var depositTransaction = new Transactions
-            {
-                AccountId = depositAccount.AccountId,
-                Amount = viewModel.AmountToDeposit,
-                Bank = viewModel.Bank,
-                Balance = depositAccount.Balance + viewModel.AmountToDeposit,
-                Date = DateTime.Now,
-                Operation = viewModel.Operation,
-                Type = "Credit",
-                AccountNavigation = depositAccount,
-                Symbol = viewModel.MessageForReceiver
-            };
+            _bankServices.DepositTransaction(viewModel.AccountId, "", viewModel.AmountToSend, operation, viewModel.Bank, viewModel.MessageForReceiver);
 
-            depositAccount.Balance += viewModel.AmountToDeposit;
+            //var depositTransaction = new Transactions
+            //{
+            //    AccountId = depositAccount.AccountId,
+            //    Amount = viewModel.AmountToDeposit,
+            //    Bank = viewModel.Bank,
+            //    Balance = depositAccount.Balance + viewModel.AmountToDeposit,
+            //    Date = DateTime.Now,
+            //    Operation = viewModel.Operation,
+            //    Type = "Credit",
+            //    AccountNavigation = depositAccount,
+            //    Symbol = viewModel.MessageForReceiver
+            //};
 
-            _appDataContext.Add(depositTransaction);
-            _appDataContext.SaveChanges();
+            //depositAccount.Balance += viewModel.AmountToDeposit;
+
+            //_appDataContext.Add(depositTransaction);
+            //_appDataContext.SaveChanges();
 
             return RedirectToAction("TransactionConfirmed");
         }
@@ -77,11 +78,9 @@ namespace WebApplication7.Controllers
             }
             if (!ModelState.IsValid) return View(viewModel);
 
-            var withdrawlAccount = _bankServices.GetSpecificAccountFromDatabase(viewModel.AccountId);
+            var operation = "Withdrawal in Cash";
 
-            var Operation = "Withdrawal in Cash";
-
-            _bankServices.WithdraTransaction(viewModel.AccountId, "", viewModel.AmountToSend, viewModel.MessageForSender, Operation, "");
+            _bankServices.WithdraTransaction(viewModel.AccountId, "", viewModel.AmountToSend, viewModel.MessageForSender, operation, "");
 
             //var withdrawlTransaction = new Transactions
             //{
@@ -125,45 +124,29 @@ namespace WebApplication7.Controllers
 
             _bankServices.WithdraTransaction(viewModel.AccountId, viewModel.ToAccountId.ToString(), viewModel.AmountToSend, viewModel.MessageForSender, operation, viewModel.Bank);
 
-            //var senderTransaction = new Transactions
-            //{
-            //    AccountId = viewModel.AccountId,
-            //    Bank = viewModel.Bank,
-            //    Account = viewModel.ToAccountId.ToString(),
-            //    Balance = senderAccount.Balance - viewModel.AmountToSend,
-            //    Amount = viewModel.AmountToSend * -1,
-            //    Type = "Debit",
-            //    Date = DateTime.Now,
-            //    Operation = viewModel.Operation,
-            //    Symbol = viewModel.MessageForSender,
-            //    AccountNavigation = senderAccount
-            //};
-
-            //senderAccount.Balance -= viewModel.AmountToSend;
-
             if (receiverAccount != null)
             {
-                viewModel.Operation = "Credit in Cash";
+                operation = "Credit in Cash";
 
-                var receiverTransaction = new Transactions
-                {
-                    AccountId = viewModel.ToAccountId,
-                    Bank = null,
-                    Balance = receiverAccount.Balance + viewModel.AmountToSend,
-                    Type = "Credit",
-                    Date = DateTime.Now,
-                    Account = viewModel.AccountId.ToString(),
-                    Operation = viewModel.Operation,
-                    Amount = viewModel.AmountToSend,
-                    Symbol = viewModel.MessageForReceiver,
-                    AccountNavigation = receiverAccount
-                };
-                receiverAccount.Balance += viewModel.AmountToSend;
+                _bankServices.DepositTransaction(viewModel.ToAccountId, viewModel.AccountId.ToString(), viewModel.AmountToSend, operation, viewModel.Bank, viewModel.MessageForReceiver);
 
-                _appDataContext.Add(receiverTransaction);
+                //var receiverTransaction = new Transactions
+                //{
+                //    AccountId = viewModel.ToAccountId,
+                //    Bank = null,
+                //    Balance = receiverAccount.Balance + viewModel.AmountToSend,
+                //    Type = "Credit",
+                //    Date = DateTime.Now,
+                //    Account = viewModel.AccountId.ToString(),
+                //    Operation = viewModel.Operation,
+                //    Amount = viewModel.AmountToSend,
+                //    Symbol = viewModel.MessageForReceiver,
+                //    AccountNavigation = receiverAccount
+                //};
+                //receiverAccount.Balance += viewModel.AmountToSend;
+
+                //_appDataContext.Add(receiverTransaction);
             }
-
-            _appDataContext.SaveChanges();
 
             return RedirectToAction("TransactionConfirmed");
         }

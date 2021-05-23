@@ -82,5 +82,27 @@ namespace WebApplication7.Services
             _bankAppDataContext.Add(newTransaction);
             _bankAppDataContext.SaveChanges();
         }
+
+        public void DepositTransaction(int accountId, string fromAccountId, decimal amount, string operation, string bank, string messageForReceiver)
+        {
+            var newTransaction = new Transactions
+            {
+                AccountId = accountId,
+                Amount = amount,
+                Bank = bank,
+                Balance = _bankAppDataContext.Accounts.First(i => i.AccountId == accountId).Balance + amount,
+                Date = DateTime.Now,
+                Operation = operation,
+                Type = "Credit",
+                AccountNavigation = _bankAppDataContext.Accounts.First(i => i.AccountId == accountId),
+                Symbol = messageForReceiver,
+                Account = fromAccountId,
+            };
+
+            _bankAppDataContext.Accounts.First(i => i.AccountId == accountId).Balance += amount;
+
+            _bankAppDataContext.Add(newTransaction);
+            _bankAppDataContext.SaveChanges();
+        }
     }
 }
