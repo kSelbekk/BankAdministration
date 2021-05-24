@@ -91,12 +91,11 @@ namespace WebApplication7.Controllers
 
             _bankServices.WithdralTransaction(viewModel.AccountId, viewModel.ToAccountId.ToString(), viewModel.AmountToSend, viewModel.MessageForSender, operation, viewModel.Bank);
 
-            if (receiverAccount != null)
-            {
-                operation = "Credit in Cash";
+            if (receiverAccount == null) return RedirectToAction("TransactionConfirmed");
 
-                _bankServices.DepositTransaction(viewModel.ToAccountId, viewModel.AccountId.ToString(), viewModel.AmountToSend, operation, viewModel.Bank, viewModel.MessageForReceiver);
-            }
+            operation = "Credit in Cash";
+
+            _bankServices.DepositTransaction(viewModel.ToAccountId, viewModel.AccountId.ToString(), viewModel.AmountToSend, operation, viewModel.Bank, viewModel.MessageForReceiver);
 
             return RedirectToAction("TransactionConfirmed");
         }

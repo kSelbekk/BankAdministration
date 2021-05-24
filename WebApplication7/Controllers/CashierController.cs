@@ -11,6 +11,7 @@ using WebApplication7.ViewModels;
 namespace WebApplication7.Controllers
 {
     [Authorize(Roles = "Cashier")]
+    [Authorize(Roles = "Admin")]
     public class CashierController : BaseController
     {
         public CashierController(BankAppDataContext appDataContext, IBankServices bankServices)

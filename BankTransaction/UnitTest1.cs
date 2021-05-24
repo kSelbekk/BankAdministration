@@ -49,16 +49,16 @@ namespace BankTransaction
 
             ctx.Database.EnsureCreated();
 
-            var acc = fixture.Create<Accounts>();
-            acc.AccountId = 1;
-            acc.Balance = 100;
+            //var acc = fixture.Create<Accounts>();
+            //acc.AccountId = 1;
+            //acc.Balance = 100;
 
-            var account1 = fixture.Create<Accounts>();
-            account1.AccountId = 2;
-            account1.Balance = 100;
+            //var account1 = fixture.Create<Accounts>();
+            //account1.AccountId = 2;
+            //account1.Balance = 100;
 
-            ctx.Add(acc);
-            ctx.Add(account1);
+            //ctx.Add(acc);
+            //ctx.Add(account1);
             ctx.SaveChanges();
 
             _bankMockServices = new Mock<IBankServices>();
@@ -71,6 +71,7 @@ namespace BankTransaction
         {
             var viewModel = fixture.Create<TransactionSendMoneyViewModel>();
             viewModel.Operation = "Remittance to Another Bank";
+            viewModel.AccountId = 1;
 
             _bankMockServices.Setup(e =>
                 e.CheckIfCustomerAccountBalanceIsValid(viewModel.AccountId, viewModel.AmountToSend)).Returns(true);
@@ -79,10 +80,6 @@ namespace BankTransaction
             _bankMockServices
                 .Verify(e => e.WithdralTransaction(viewModel.AccountId, viewModel.ToAccountId.ToString(),
                     viewModel.AmountToSend, viewModel.MessageForSender, viewModel.Operation, viewModel.Bank), Times.Once);
-
-            _bankMockServices
-                .Verify(e => e.WithdralTransaction(viewModel.ToAccountId, viewModel.AccountId.ToString(),
-                    viewModel.AmountToSend, viewModel.MessageForSender, viewModel.Operation, viewModel.Bank), Times.Never);
         }
 
         [TestMethod]
@@ -100,6 +97,27 @@ namespace BankTransaction
             _bankMockServices
                 .Verify(e => e.WithdralTransaction(viewModel.AccountId, "",
                     viewModel.AmountToSend, viewModel.MessageForSender, viewModel.Operation, ""), Times.Once);
+        }
+
+        [TestMethod]
+        public void When_WithdralTransaction_is_called_there_should_be_a_correct_transaction_in_db()
+        {
+            var viewModel = new TransactionDepositMoneyViewModel
+            {
+                AccountId = 1,
+                AmountToSend = 100,
+                Operation = "",
+                Bank = "",
+                MessageForReceiver = ""
+            };
+
+            var a = new Transactions();
+
+            a.AccountId = viewModel.AccountId;
+            a.Amount = viewModel.AmountToSend;
+            _sut.DepositMoney(viewModel);
+
+            Assert.AreEqual(viewModel.AmountToSend, ctx.Transactions.FirstOrDefault(t => t.AccountId == viewModel.AccountId).Amount);
         }
 
         [TestMethod]

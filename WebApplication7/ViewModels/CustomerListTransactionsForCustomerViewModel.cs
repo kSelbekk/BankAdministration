@@ -8,6 +8,7 @@ namespace WebApplication7.ViewModels
         public List<CustomerTransaction> CustomerTransactions { get; set; }
 
         public int AccountId { get; set; }
+        public decimal Balance { get; set; }
 
         public class CustomerTransaction
         {

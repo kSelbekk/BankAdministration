@@ -23,6 +23,7 @@ namespace WebApplication7.Controllers
             if (dbCustomer == null)
             {
                 ModelState.AddModelError("Id", "No account found");
+                return RedirectToAction("Index", "Home");
             }
 
             var viewModel = new CustomerCustomerProfileViewModel
@@ -114,7 +115,8 @@ namespace WebApplication7.Controllers
                         TransactionDate = p.Date,
                         TransactionId = p.TransactionId
                     }).ToList(),
-                AccountId = id
+                AccountId = id,
+                Balance = _bankServices.GetSpecificAccountFromDatabase(id).Balance
             };
 
             return View(viewModel);
