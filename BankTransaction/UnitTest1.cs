@@ -70,7 +70,6 @@ namespace BankTransaction
         public void Dont_complete_transactionSendMoney_if_balance_is_less_then_amount_to_send()
         {
             var viewModel = fixture.Create<TransactionSendMoneyViewModel>();
-
             viewModel.Operation = "Remittance to Another Bank";
 
             _bankMockServices.Setup(e =>
@@ -80,6 +79,7 @@ namespace BankTransaction
             _bankMockServices
                 .Verify(e => e.WithdralTransaction(viewModel.AccountId, viewModel.ToAccountId.ToString(),
                     viewModel.AmountToSend, viewModel.MessageForSender, viewModel.Operation, viewModel.Bank), Times.Once);
+
             _bankMockServices
                 .Verify(e => e.WithdralTransaction(viewModel.ToAccountId, viewModel.AccountId.ToString(),
                     viewModel.AmountToSend, viewModel.MessageForSender, viewModel.Operation, viewModel.Bank), Times.Never);
