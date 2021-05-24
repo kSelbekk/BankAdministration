@@ -5,14 +5,14 @@ namespace WebApplication7.Utilities
 {
     public class ValidateNoNegativeNumber : ValidationAttribute
     {
-        protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
+        public override bool IsValid(object? value)
         {
             if ((decimal)value > 0)
             {
-                return ValidationResult.Success;
+                return true;
             }
 
-            return new ValidationResult("No negative numbers");
+            return false;
         }
     }
 }

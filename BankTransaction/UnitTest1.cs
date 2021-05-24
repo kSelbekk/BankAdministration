@@ -19,6 +19,7 @@ using Microsoft.VisualStudio.TestPlatform.Common.DataCollection;
 using WebApplication7.Models;
 using WebApplication7.ViewModels;
 using WebApplication7.Data;
+using WebApplication7.Utilities;
 
 namespace BankTransaction
 {
@@ -104,10 +105,15 @@ namespace BankTransaction
         [TestMethod]
         public void Not_supposed_to_use_negative_numbers_for_transactions()
         {
-            var response = _sut.ValidateNoNegativeNumber(-50);
+            //var response = _sut.ValidateNoNegativeNumber(-50);
 
-            var result = (JsonResult)response;
-            Assert.AreNotEqual(true, result.Value);
+            //var result = (JsonResult)response;
+            //Assert.AreNotEqual(true, result.Value);
+
+            var atr = new ValidateNoNegativeNumber();
+
+            var result = atr.IsValid(-10m);
+            Assert.IsFalse(result);
         }
     }
 }
