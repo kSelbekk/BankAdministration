@@ -40,6 +40,7 @@ namespace WebApplication7.Services
             return _bankAppDataContext.Transactions
                 .Where(c => c.AccountId == id)
                 .OrderByDescending(a => a.Date)
+                .ThenByDescending(i => i.TransactionId)
                 .Skip(skip)
                 .Take(take);
         }

@@ -13,7 +13,7 @@ using WebApplication7.ViewModels;
 
 namespace WebApplication7.Controllers
 {
-    [Authorize(Roles = "Cashier")]
+    [Authorize(Roles = "Cashier, Admin")]
     public class TransactionController : BaseController
     {
         public TransactionController(BankAppDataContext appDataContext, IBankServices bankServices)
