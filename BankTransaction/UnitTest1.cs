@@ -34,6 +34,7 @@ namespace BankTransaction
         private Mock<IBankServices> _bankMockServices;
         private TransactionController _sut;
         private BankAppDataContext ctx;
+        private BankAdmin sutBankAdmin;
 
         public TransactionUnitTest()
         {
@@ -47,22 +48,17 @@ namespace BankTransaction
 
             ctx = new BankAppDataContext(options);
 
+            var acc = fixture.Create<Accounts>();
+            acc.AccountId = 1;
+            acc.Balance = 100;
+            acc.Transactions = new List<Transactions>();
+
             ctx.Database.EnsureCreated();
-
-            //var acc = fixture.Create<Accounts>();
-            //acc.AccountId = 1;
-            //acc.Balance = 100;
-
-            //var account1 = fixture.Create<Accounts>();
-            //account1.AccountId = 2;
-            //account1.Balance = 100;
-
-            //ctx.Add(acc);
-            //ctx.Add(account1);
+            ctx.Add(acc);
             ctx.SaveChanges();
 
             _bankMockServices = new Mock<IBankServices>();
-
+            sutBankAdmin = new BankAdmin(ctx);
             _sut = new TransactionController(ctx, _bankMockServices.Object);
         }
 
@@ -100,24 +96,42 @@ namespace BankTransaction
         }
 
         [TestMethod]
+        public void When_DepositTransaction_is_called_there_should_be_a_correct_transaction_in_db()
+        {
+            var viewModel = fixture.Create<TransactionDepositMoneyViewModel>();
+
+            viewModel.AccountId = 1;
+            viewModel.Operation = "Collection from Another Bank";
+            viewModel.Bank = "AS";
+
+            sutBankAdmin.DepositTransaction(viewModel.AccountId, "",
+                viewModel.AmountToSend, viewModel.Operation, viewModel.Bank, viewModel.MessageForReceiver);
+
+            var acc = ctx.Transactions.FirstOrDefault(i => i.AccountId == viewModel.AccountId);
+
+            Assert.AreEqual(viewModel.AmountToSend, acc.Amount);
+            Assert.AreEqual(viewModel.AccountId, acc.AccountId);
+            Assert.AreEqual(viewModel.Operation, acc.Operation);
+            Assert.AreEqual(viewModel.MessageForReceiver, acc.Symbol);
+        }
+
+        [TestMethod]
         public void When_WithdralTransaction_is_called_there_should_be_a_correct_transaction_in_db()
         {
-            var viewModel = new TransactionDepositMoneyViewModel
-            {
-                AccountId = 1,
-                AmountToSend = 100,
-                Operation = "",
-                Bank = "",
-                MessageForReceiver = ""
-            };
+            var viewModel = fixture.Create<TransactionWithdrawalMoneyViewModel>();
 
-            var a = new Transactions();
+            viewModel.AccountId = 1;
+            viewModel.Operation = "Withdrawal in Cash";
 
-            a.AccountId = viewModel.AccountId;
-            a.Amount = viewModel.AmountToSend;
-            _sut.DepositMoney(viewModel);
+            sutBankAdmin.WithdralTransaction(viewModel.AccountId, "",
+                viewModel.AmountToSend, viewModel.MessageForSender, viewModel.Operation, "");
 
-            Assert.AreEqual(viewModel.AmountToSend, ctx.Transactions.FirstOrDefault(t => t.AccountId == viewModel.AccountId).Amount);
+            var acc = ctx.Transactions.FirstOrDefault(i => i.AccountId == viewModel.AccountId);
+
+            Assert.AreEqual(viewModel.AmountToSend * -1, acc.Amount);
+            Assert.AreEqual(viewModel.AccountId, acc.AccountId);
+            Assert.AreEqual(viewModel.Operation, acc.Operation);
+            Assert.AreEqual(viewModel.MessageForSender, acc.Symbol);
         }
 
         [TestMethod]
