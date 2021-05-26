@@ -14,7 +14,7 @@
     <div class="card">
         <div class="card-header card-header-primary">
             <h4 class="card-title">Customers</h4>
-            @if (SignInManager.IsSignedIn(User) && User.IsInRole("Cashier"))
+            @if (SignInManager.IsSignedIn(User) && User.IsInRole("Cashier") || SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
             {
                 <a class="card-category" asp-controller="Cashier" asp-action="CreatNewCustomer">Creat new customer</a>
             }
@@ -30,7 +30,7 @@
                             <th>City</th>
                             <th>Address</th>
                             <th>Personal number</th>
-                            @if (SignInManager.IsSignedIn(User) && User.IsInRole("Cashier"))
+                            @if (SignInManager.IsSignedIn(User) && User.IsInRole("Cashier") || SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
                             {
                                 <th>Edit</th>
 

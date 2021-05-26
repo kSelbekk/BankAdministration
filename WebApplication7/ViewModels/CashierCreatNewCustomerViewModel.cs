@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace WebApplication7.ViewModels
 {
@@ -9,6 +10,8 @@ namespace WebApplication7.ViewModels
     {
         [Required, MaxLength(6)]
         public string Gender { get; set; }
+
+        public List<SelectListItem> AllGenders { get; set; } = new();
 
         [Required, MaxLength(100)]
         public string Givenname { get; set; }

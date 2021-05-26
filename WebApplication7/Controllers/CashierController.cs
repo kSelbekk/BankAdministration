@@ -30,6 +30,7 @@ namespace WebApplication7.Controllers
                 CountryCode = dbCustomer.CountryCode,
                 EmailAddress = dbCustomer.Emailaddress,
                 Gender = dbCustomer.Gender,
+                AllGenders = GetAllGenders(),
                 Givenname = dbCustomer.Givenname,
                 NationalId = dbCustomer.NationalId,
                 StreetAddress = dbCustomer.Streetaddress,
@@ -68,7 +69,7 @@ namespace WebApplication7.Controllers
 
         public IActionResult CreatNewCustomer()
         {
-            var viewModel = new CashierCreatNewCustomerViewModel();
+            var viewModel = new CashierCreatNewCustomerViewModel { AllGenders = GetAllGenders() };
             return View(viewModel);
         }
 
@@ -115,10 +116,21 @@ namespace WebApplication7.Controllers
                 Type = "OWNER"
             };
             _appDataContext.Dispositions.Update(newDisposition);
-
             _appDataContext.SaveChanges();
 
-            return View(viewModel);
+            return RedirectToAction("CustomerProfile", "Customer", new { id = newCustomer.CustomerId });
+        }
+
+        private List<SelectListItem> GetAllGenders()
+        {
+            var list = new List<SelectListItem>
+            {
+                new() { Text = "male", Value = "male" },
+                new() { Text = "female", Value = "female" },
+                new() { Text = "other", Value = "other" }
+        };
+
+            return list;
         }
     }
 }
