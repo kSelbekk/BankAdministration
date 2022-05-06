@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace WebApplication7.ViewModels
 {
@@ -34,7 +33,7 @@ namespace WebApplication7.ViewModels
         [Required]
         public string CountryCode { get; set; }
 
-        public DateTime? Birthday { get; set; }
+        public DateTime Birthday { get; set; }
 
         [MaxLength(20)]
         public string? NationalId { get; set; }

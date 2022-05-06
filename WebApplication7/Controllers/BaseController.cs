@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using WebApplication7.Data;
 using WebApplication7.Models;
 using WebApplication7.Services;
 

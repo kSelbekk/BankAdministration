@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Collections.Generic;
 using WebApplication7.Models;
 using WebApplication7.Services;
 using WebApplication7.ViewModels;
@@ -13,56 +11,32 @@ namespace WebApplication7.Controllers
     [Authorize(Roles = "Cashier, Admin")]
     public class CashierController : BaseController
     {
-        public CashierController(BankAppDataContext appDataContext, IBankServices bankServices)
+        private readonly CustomerRepository _customerRepository;
+        private readonly AccountsRepository _accountsRepository;
+
+        public CashierController(BankAppDataContext appDataContext, IBankServices bankServices, CustomerRepository customerRepository, AccountsRepository accountsRepository)
             : base(appDataContext, bankServices)
         {
+            _customerRepository = customerRepository;
+            _accountsRepository = accountsRepository;
         }
 
         public IActionResult EditCustomer(int id)
         {
             var dbCustomer = _bankServices.GetSpecificCustomerInformation(id);
-
-            var viewModel = new CashierEditUserAccountsViewModel
-            {
-                Id = dbCustomer.CustomerId,
-                City = dbCustomer.City,
-                Country = dbCustomer.Country,
-                CountryCode = dbCustomer.CountryCode,
-                EmailAddress = dbCustomer.Emailaddress,
-                Gender = dbCustomer.Gender,
-                AllGenders = GetAllGenders(),
-                Givenname = dbCustomer.Givenname,
-                NationalId = dbCustomer.NationalId,
-                StreetAddress = dbCustomer.Streetaddress,
-                Surname = dbCustomer.Surname,
-                TelephoneCountryCode = dbCustomer.Telephonecountrycode,
-                Telephonenumber = dbCustomer.Telephonenumber,
-                Zipcode = dbCustomer.Zipcode
-            };
-
+            var viewModel = _customerRepository.EditCustomer(dbCustomer, GetAllGenders());
             return View(viewModel);
         }
 
         [HttpPost]
         public IActionResult EditCustomer(CashierEditUserAccountsViewModel viewModel)
         {
-            if (!ModelState.IsValid) return View(viewModel);
+            if (!ModelState.IsValid)
+                return View(viewModel);
 
             var dbCustomer = _bankServices.GetSpecificCustomerInformation(viewModel.Id);
-
-            dbCustomer.Givenname = viewModel.Givenname;
-            dbCustomer.Country = viewModel.Country;
-            dbCustomer.CountryCode = viewModel.CountryCode;
-            dbCustomer.NationalId = viewModel.NationalId;
-            dbCustomer.City = viewModel.City;
-            dbCustomer.Surname = viewModel.Surname;
-            dbCustomer.Gender = viewModel.Gender;
-            dbCustomer.Telephonenumber = viewModel.Telephonenumber;
-            dbCustomer.Telephonecountrycode = viewModel.TelephoneCountryCode;
-            dbCustomer.Zipcode = viewModel.Zipcode;
-            dbCustomer.Emailaddress = viewModel.EmailAddress;
-
-            _appDataContext.SaveChanges();
+            _customerRepository.EditCustomer(dbCustomer, viewModel);
+            _customerRepository.SaveChanges();
 
             return RedirectToAction("CustomerProfile", "Customer", new { id = dbCustomer.CustomerId });
         }
@@ -76,47 +50,15 @@ namespace WebApplication7.Controllers
         [HttpPost]
         public IActionResult CreatNewCustomer(CashierCreatNewCustomerViewModel viewModel)
         {
-            if (!ModelState.IsValid) return View(viewModel);
+            if (!ModelState.IsValid)
+                return View(viewModel);
 
-            var newCustomer = new Customers
-            {
-                Givenname = viewModel.Givenname,
-                Surname = viewModel.Surname,
-                Birthday = viewModel.Birthday,
-                City = viewModel.City,
-                Country = viewModel.Country,
-                CountryCode = viewModel.CountryCode,
-                Emailaddress = viewModel.Emailaddress,
-                Gender = viewModel.Gender,
-                NationalId = viewModel.NationalId,
-                Streetaddress = viewModel.Streetaddress,
-                Telephonecountrycode = viewModel.Telephonecountrycode,
-                Telephonenumber = viewModel.Telephonenumber,
-                Zipcode = viewModel.Zipcode,
-                Dispositions = new List<Dispositions>()
-            };
+            var newCustomer = _customerRepository.CreatNewCustomer(viewModel);
+            _customerRepository.SaveChanges();
+            _customerRepository.Update(newCustomer);
 
-            _appDataContext.Add(newCustomer);
-            _appDataContext.SaveChanges();
-
-            _appDataContext.Customers.Update(newCustomer);
-
-            var newAccount = new Accounts
-            {
-                Created = DateTime.Now,
-                Frequency = "Monthly"
-            };
-
-            _appDataContext.Accounts.Update(newAccount);
-
-            var newDisposition = new Dispositions
-            {
-                Account = newAccount,
-                Customer = newCustomer,
-                Type = "OWNER"
-            };
-            _appDataContext.Dispositions.Update(newDisposition);
-            _appDataContext.SaveChanges();
+            _accountsRepository.CreateNewAccount(newCustomer);
+            _accountsRepository.SaveChanges();
 
             return RedirectToAction("CustomerProfile", "Customer", new { id = newCustomer.CustomerId });
         }
@@ -128,8 +70,7 @@ namespace WebApplication7.Controllers
                 new() { Text = "male", Value = "male" },
                 new() { Text = "female", Value = "female" },
                 new() { Text = "other", Value = "other" }
-        };
-
+            };
             return list;
         }
     }

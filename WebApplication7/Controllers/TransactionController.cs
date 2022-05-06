@@ -1,12 +1,6 @@
-﻿using System;
-using System.Linq;
-using System.Net;
-using System.Threading;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ViewEngines;
-using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using WebApplication7.Models;
 using WebApplication7.Services;
 using WebApplication7.ViewModels;
